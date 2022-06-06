@@ -5,16 +5,22 @@ $a3 = [-0.01, -0.0001, -.15];
 $a4 = ["-1", "2", "-3", "4", "-5", "5", "-6", "6", "-7", "7"];
 /* sd96 - 6/5/22
 The loop iterates through each value in the array
-A ternary operator evalues the value
-If it is greater than or equal to 0, it is echoed
-Otherwise(it is negative), the opposite or negative of it is echoed
+If the value is a float or int, the ternary operator evaluates whether it is greater than 0
+echoing that value if it is or the negative of it if it isn't
+If the value is a string, the ternary operator evaluates whether the first character is not a negative(-),
+echoing the same string if it is true and echoing the string without the first character if it isn't
+using the substr function
 */
 function bePositive($arr) {
     echo "<br>Processing Array:<br><pre>" . var_export($arr, true) . "</pre>";
     echo "<br>Positive output:<br>";
     //TODO use echo to output all of the values as positive (even if they were originally positive)
     foreach($arr as $val) {
-        echo ($val >= 0 ? $val : -$val) . "<br>";
+        if (is_int($val) || is_float($val)) {
+            echo ($val >= 0 ? $val : -$val) . "<br>";
+        } else {
+            echo (($val[0] != "-") ? $val . "<br>" : (substr($val, 1) . "<br>"));
+        }
     }
 }
 echo "Problem 3: Be Positive<br>";
