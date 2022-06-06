@@ -3,7 +3,12 @@ $a1 = [-1, -2, -3, -4, -5, -6, -7, -8, -9, -10];
 $a2 = [-1, 1, -2, 2, 3, -3, -4, 5];
 $a3 = [-0.01, -0.0001, -.15];
 $a4 = ["-1", "2", "-3", "4", "-5", "5", "-6", "6", "-7", "7"];
-
+/* sd96 - 6/5/22
+The loop iterates through each value in the array
+A ternary operator evalues the value
+If it is greater than or equal to 0, it is echoed
+Otherwise(it is negative), the opposite or negative of it is echoed
+*/
 function bePositive($arr) {
     echo "<br>Processing Array:<br><pre>" . var_export($arr, true) . "</pre>";
     echo "<br>Positive output:<br>";
