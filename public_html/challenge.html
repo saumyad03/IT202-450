@@ -24,7 +24,10 @@
     Gets the list elements and changes the display property inline to remove
     list markers and make the nav horizontal
     Changes the nav's background-color property
-    Changes the background-color and color property of the links when hovered over-->
+    Changes the background-color and color property of the links when hovered over
+    Changed list markers of challenge list to checkmarks
+    Used text-transform property to capitalize h1 and a tags
+    -->
     <style>
         /* TODO: make edits here */
         nav > ul > li {
@@ -36,6 +39,12 @@
         a:hover {
             background-color: #a9a9a9;
             color: red;
+        }
+        ul {
+            list-style: "✓";
+        }
+        h1, a {
+            text-transform: capitalize;
         }
     </style>
     <!-- make the necessary edits above this line -->
