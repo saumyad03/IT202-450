@@ -5,17 +5,25 @@
     <title>Problem 1</title>
     <meta charset="utf-8" />
     <!-- sd96 - 6/13/22
-    EXPLANATION-->
+    Added event listeners to the links using querySelectorAll and a for loop
+    so that they listen for the user clicking. Once they are clicked on, the
+    getCurrentSelection function is called. In this function, the variable word
+    is assigned to the value of the textContent attribute of whatever link triggered
+    the event. Then the updateCurrentPage function is called with this word as an
+    argument. -->
     <script>
         window.addEventListener("load", () => {
             console.log("loaded via javascript");
             //TODO: add any extra onload processing you may need here
+            const links = document.querySelectorAll("a");
+            for (let i = 0; i < links.length; i++) { links[i].addEventListener("click", getCurrentSelection); }
         });
         function getCurrentSelection() {
             setTimeout(() => {
                 //added this delay here as some solutions may require it to update properly (i.e., click code may complete before the navigation changes)
                 //TODO: add code for processing the current selection 
-
+                word = this.textContent;
+                updateCurrentPage(word);
                 //Note: likely you'll want to call updateCurrentPage towards the end
             }, 100);
         }
@@ -29,8 +37,7 @@
     Used text-transform property to capitalize h1 and a tags
     Removed underline from a tags and changed default text color to white
     Made a tags bigger with padding to increase hitboxes and add spacing
-    Removed margins from ul tags and added padding to nav bar to match a tags
-    -->
+    Removed margins from ul tags and added padding to nav bar to match a tags-->
     <style>
         /* TODO: make edits here */
         nav > ul > li { display: inline; }
