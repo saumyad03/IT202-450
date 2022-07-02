@@ -33,7 +33,7 @@ require_once(__DIR__ . "/../../partials/nav.php");
         //TODO 3: validate/use
         $hasError = false;
         if (empty($email)) {
-            echo "Email must not be empty <br>";
+            flash("Email must not be empty <br>");
             $hasError = true;
         }
         //sanitize
@@ -41,42 +41,43 @@ require_once(__DIR__ . "/../../partials/nav.php");
         $email = sanitize_email($email);
         //validate
         /*if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo "Please enter a valid email <br>";
+            flash("Please enter a valid email <br>");
             $hasError = true;
         }*/
         if (!is_valid_email($email)) {
-            echo "Please enter a valid email <br>";
+            flash("Please enter a valid email <br>");
             $hasError = true;
         }
         if (empty($password)) {
-            echo "Password must not be empty <br>";
+            flash("Password must not be empty <br>");
             $hasError = true;
         }
         if (empty($confirm)) {
-            echo "Confirm password must not be empty <br>";
+            flash("Confirm password must not be empty <br>");
             $hasError = true;
         }
         if (strlen($password) < 8) {
-            echo "Password must be at least 8 characters long <br>";
+            flash("Password must be at least 8 characters long <br>");
             $hasError = true;
         }
         if (strlen($password) > 0 && $password != $confirm) {
-            echo "Passwords must match <br>";
+            flash("Passwords must match <br>");
             $hasError = true;
         }
         if (!$hasError) {
-            //echo "Welcome, $email";
+            //flash("Welcome, $email");
             //TODO 4
             $hash = password_hash($password, PASSWORD_BCRYPT);
             $db = getDB();
             $stmt = $db->prepare("INSERT INTO Users(email, password) VALUES (:email, :password)");
             try {
                 $r = $stmt->execute([":email"=>$email, ":password"=>$hash]);
-                echo "Successfully registered!";
+                flash("Successfully registered!");
             } catch (Exception $e) {
-                echo "There was an error registering<br>";
-                echo "<pre>" . var_export($e, true) . "</pre>";
+                flash("There was an error registering<br>");
+                flash("<pre>" . var_export($e, true) . "</pre>");
             }
         }
     }
 ?>
+<?php require_once(__DIR__."/../../partials/flash.php");
