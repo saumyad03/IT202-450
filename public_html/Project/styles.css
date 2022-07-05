@@ -13,11 +13,44 @@
 .alert-info {
     background-color: teal;
 }
-nav li{display: inline; background-color: rebeccapurple;}
-nav li a{color: hotpink}
-input{border-radius: 50%;}
+nav > ul {
+    margin: 0 0 0 0;
+}
+nav {
+    background-color: #003559;
+    padding: 5px 0 5px 0;
+    margin: 0 0 0 0;
+}
+nav li{
+    display: inline;
+    background-color: #003559;
+    padding: 5px 5px 5px 5px;
+}
+nav li:hover{
+    background-color: #061A40;
+}
+nav li a{
+    text-decoration: none;
+    color: #EEEBD3
+}
+input {
+    margin-bottom: 5px;
+}
+input[type=submit] {
+    background-color: #003559;
+    color: #EEEBD3;
+    border-radius: 10%;
+    padding: 5px 10px 5px 10px;
+    font-size: 12pt;
+    font-family: 'Times New Roman';
+}
+#password-reset-title {
+    font-weight: bold;
+}
 body{
-    background-color: hotpink;
-    color: rgb(153, 0, 153);
-
+    background-color: #EEEBD3;
+    color: #061A40;
+}
+#flash {
+    margin: 0 0 5px 0;
 }
