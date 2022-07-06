@@ -101,6 +101,7 @@ require_once(__DIR__ . "/../../partials/nav.php");
                                 $stmt->execute([":user_id" => $user["id"]]);
                                 $roles = $stmt->fetchAll(PDO::FETCH_ASSOC); //fetch all since we'll want multiple
                             } catch (Exception $e) {
+                                flash("An unknown error occurred", "danger");
                                 error_log(var_export($e, true));
                             }
                             //save roles or empty array
@@ -119,7 +120,8 @@ require_once(__DIR__ . "/../../partials/nav.php");
                     }
                 }
             } catch (Exception $e) {
-                flash("<pre>" . var_export($e, true) . "</pre>");
+                flash("An unknown error occurred", "danger");
+                error_log(var_export($e, true));
             }
         }
     }
