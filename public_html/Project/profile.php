@@ -117,7 +117,43 @@ $username = get_username();
         let con = form.confirmPassword.value;
         let isValid = true;
         //TODO add other client side validation....
-
+        let email = form.email.value;
+        let username = form.username.value;
+        let currpw = form.cp.value;
+        if (email.length === 0) {
+            flash("Email must not be empty", "warning");
+            isValid = false;
+        } else {
+            const emailRegEx = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/;
+            if (!emailRegEx.test(email)) {
+                flash("Invalid email address", "warning");
+                isValid = false;
+            }
+        }
+        if (username.length === 0) {
+            flash("Username must not be empty", "warning");
+            isValid = false;
+        } else {
+            const usernameRegEx = /^[a-z0-9_-]{3,16}$/;
+            if (!usernameRegEx.test(username)) {
+                flash("Invalid username", "warning");
+                isValid = false;
+            }
+        }
+        //If current password field is not empty
+        if (currpw.length !== 0) {
+            //Checks if current password is invalid
+            if (currpw.length < 8) {
+                flash("Current password must be at least 8 characters long", "warning");
+                isValid = false;
+            //If current password is valid, ensures new password follows password rules
+            } else {
+                if (pw.length < 8) {
+                    flash("New password must be at least 8 characters long", "warning");
+                    isValid = false;
+                }
+            }
+        }
         //example of using flash via javascript
         //find the flash container, create a new element, appendChild
         if (pw !== con) {

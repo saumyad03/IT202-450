@@ -4,11 +4,11 @@ require_once(__DIR__ . "/../../partials/nav.php");
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email/Username</label>
-        <input type="text" name="email" required />
+        <input type="text" name="email" required/>
     </div>
     <div>
         <label for="pw">Password</label>
-        <input type="password" id="pw" name="password" required minlength="8" />
+        <input type="password" id="pw" name="password" required minlength="8"/>
     </div>
     <input type="submit" value="Login" />
 </form>
@@ -16,8 +16,35 @@ require_once(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
-        //let email = form.email.value
-        return true;
+        let isValid = true;
+        let email = form.email.value;
+        let password = form.password.value;
+        if (email.length === 0) {
+            flash("Email/username must not be empty", "warning");
+            isValid = false;
+        }
+        if (email.includes("@")) {
+            const emailRegEx = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/;
+            if (!emailRegEx.test(email)) {
+                flash("Invalid email address", "warning");
+                isValid = false;
+            }
+        } else {
+            const usernameRegEx = /^[a-z0-9_-]{3,16}$/;
+            if (!usernameRegEx.test(email)) {
+                flash("Invalid username", "warning");
+                isValid = false;
+            }
+        }
+        if (password.length === 0) {
+            flash("Password must not be empty", "warning");
+            isValid = false;
+        }
+        if (password.length < 8) {
+            flash("Password must be at least 8 characters long", "warning");
+            isValid = false;
+        }
+        return isValid;
     }
 </script>
 <?php
@@ -28,7 +55,7 @@ require_once(__DIR__ . "/../../partials/nav.php");
         //TODO 3: validate/use
         $hasError = false;
         if (empty($email)) {
-            flash("Email must not be empty <br>");
+            flash("Email/username must not be empty");
             $hasError = true;
         }
         if (str_contains($email, "@")) {
@@ -46,11 +73,11 @@ require_once(__DIR__ . "/../../partials/nav.php");
             }
         }
         if (empty($password)) {
-            flash("Password must not be empty <br>");
+            flash("Password must not be empty");
             $hasError = true;
         }
         if (strlen($password) < 8) {
-            flash("Password must be at least 8 characters long <br>");
+            flash("Password must be at least 8 characters long");
             $hasError = true;
         }
         if (!$hasError) {
@@ -88,7 +115,7 @@ require_once(__DIR__ . "/../../partials/nav.php");
                             flash("Invalid password");
                         }
                     } else {
-                        flash("Email not found");
+                        flash("Email/username not found");
                     }
                 }
             } catch (Exception $e) {
