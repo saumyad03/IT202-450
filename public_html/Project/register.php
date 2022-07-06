@@ -5,19 +5,19 @@ reset_session();
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email</label>
-        <input type="email" name="email" required />
+        <input type="email" name="email" required/>
     </div>
     <div>
         <label for="username">Username</label>
-        <input type="text" name="username" required maxlength="30" />
+        <input type="text" name="username"maxlength="30" required/>
     </div>
     <div>
         <label for="pw">Password</label>
-        <input type="password" id="pw" name="password" required minlength="8" />
+        <input type="password" id="pw" name="password" required minlength="8"/>
     </div>
     <div>
         <label for="confirm">Confirm</label>
-        <input type="password" name="confirm" required minlength="8" />
+        <input type="password" name="confirm" required minlength="8"/>
     </div>
     <input type="submit" value="Register" />
 </form>
@@ -25,8 +25,45 @@ reset_session();
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
-
-        return true;
+        let isValid = true;
+        let email = form.email.value;
+        let username = form.username.value;
+        let pw = form.pw.value;
+        let con = form.confirm.value;
+        if (email.length === 0) {
+            flash("Email must not be empty", "warning");
+            isValid = false;
+        } else {
+            const emailRegEx = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/;
+            if (!emailRegEx.test(email)) {
+                flash("Invalid email address", "warning");
+                isValid = false;
+            }
+        }
+        if (username.length === 0) {
+            flash("Username must not be empty", "warning");
+            isValid = false;
+        } else {
+            const usernameRegEx = /^[a-z0-9_-]{3,16}$/;
+            if (!usernameRegEx.test(username)) {
+                flash("Invalid username", "warning");
+                isValid = false;
+            }
+        }
+        if (pw.length === 0) {
+            flash("Password must not be empty", "warning");
+            isValid = false;
+        } else {
+            if (pw.length < 8) {
+            flash("Password must be at least 8 characters in length", "warning");
+            isValid = false;
+        }
+        }
+        if (pw !== con) {
+            flash("Password and Confirm password must match", "warning");
+            isValid = false;
+        }
+        return isValid;
     }
 </script>
 <?php
