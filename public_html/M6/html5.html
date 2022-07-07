@@ -12,6 +12,7 @@
         }
     </style>
 </head>
+
 <body>
     <canvas id="canvas" height="400px" width="600px" tabindex="1"></canvas>
     <script>
@@ -46,7 +47,9 @@
         // Is a bullet already on the canvas?
         var shooting = false;
         // The bulled shot from the ship
+        
         var bullet = makeSquare(0, 0, 10, 10);
+        var bigBullets = false;
 
         // An array for enemies (in case there are more than one)
         var enemies = [];
@@ -59,6 +62,22 @@
             var enemyY = Math.round(Math.random() * (canvas.height - enemySize * 2)) + enemySize;
             var enemySpeed = Math.round(Math.random() * enemyBaseSpeed) + enemyBaseSpeed;
             enemies.push(makeSquare(enemyX, enemyY, enemySize, enemySpeed));
+        }
+
+        //Variable that stores the currently generate powerup
+        var powerup = null;
+
+        //Makes a powerup the player can shoot
+        function makePowerup() {
+            var powerupX = canvas.width;
+            var powerupSize = 15;
+            var powerupY = Math.round(Math.random() * (canvas.height - powerupSize * 2)) + powerupSize;
+            var powerupSpeed = 5;
+            //Creates powerup object with square properties and boost
+            powerup = {
+                entity: (makeSquare(powerupX, powerupY, powerupSize, powerupSpeed)),
+                boost: Math.floor(Math.random() * 3)
+            };
         }
 
         // Check if number a is in the range b to c (exclusive)
@@ -105,6 +124,8 @@
             timeoutId = setInterval(makeEnemy, timeBetweenEnemies);
             // Make the first enemy
             setTimeout(makeEnemy, 1000);
+            //Make the first powerup
+            setTimeout(makePowerup, 5 * 1000);
             // Kick off the draw loop
             draw();
             // Stop listening for click events
@@ -160,6 +181,12 @@
                 shooting = true;
                 bullet.x = ship.x + ship.l;
                 bullet.y = ship.y + ship.l / 2;
+                //makes bullet huge if big bullets powerup is on
+                if (bigBullets) {
+                    bullet.l = 20;
+                } else {
+                    bullet.l = 10;
+                }
             }
         }
 
@@ -182,6 +209,52 @@
                     gameOver = true;
                 }
             });
+            //If powerup exists, moves and draws it and assigns color based on what boost it gives
+            if (powerup) {
+                if (powerup.boost === 0) {
+                    //+10 to score
+                    context.fillStyle = "yellow";
+                } else if (powerup.boost === 1) {
+                    //Big bullets
+                    context.fillStyle = "purple";
+                } else {
+                    //Fast movement
+                    context.fillStyle = "black";
+                }
+                //Moves powerup and draws it
+                powerup.entity.x -= powerup.entity.s;
+                powerup.entity.draw();
+            }
+            //If powerup exists, checks if it has reached end of screen and makes new one after 5 seconds
+            if (powerup) {
+                if (powerup.entity.x < 0) {
+                    powerup = null;
+                    setTimeout(makePowerup, 5 * 1000);
+                }
+            }
+            //If powerup exists, checks for collision between powerup and ship (collision ends game)
+            if (powerup) {
+                if (isColliding(powerup.entity, ship)) {
+                    gameOver = true;
+                }
+            }
+            //If powerup exists, checks for collision between powerup and bullet
+            if (powerup) {
+                if (isColliding(bullet, powerup.entity)) {
+                    shooting = false;
+                    if (powerup.boost === 0) {
+                        score += 10;
+                    } else if (powerup.boost === 1) {
+                        bigBullets = true;
+                        setTimeout(() => bigBullets = false, 5 * 1000);
+                    } else {
+                        ship.s = 10;
+                        setTimeout(() => ship.s = 5, 5 * 1000);
+                    }
+                    powerup = null;
+                    setTimeout(makePowerup, 5 * 1000);
+                }
+            }
             // Move the ship
             if (down) {
                 ship.y += ship.s;
