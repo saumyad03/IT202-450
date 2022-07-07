@@ -47,7 +47,9 @@
         // Is a bullet already on the canvas?
         var shooting = false;
         // The bulled shot from the ship
-        
+        /* sd96 - 7/7/22
+        Declares variable bigBullets so that it can be changed to alter the properties of bullets
+        */
         var bullet = makeSquare(0, 0, 10, 10);
         var bigBullets = false;
 
@@ -63,10 +65,15 @@
             var enemySpeed = Math.round(Math.random() * enemyBaseSpeed) + enemyBaseSpeed;
             enemies.push(makeSquare(enemyX, enemyY, enemySize, enemySpeed));
         }
-
+        /* sd96 - 7/7/22
+        The code creates a variable to store a powerup object. In it, entity is mapped to another object that stores
+        properties like x, y, size, speed, and draw function. Boost is mapped to a number (either 0, 1, or 2) that determines what
+        shooting the powerup will do for the player. The function makePowerup is essentially the same thing as makeEnemy
+        but has hardcoded values for size and speed. Also, rather than having an array of powerups, there is only a variable
+        that stores the powerup object since only one can be on screen at once.
+        */
         //Variable that stores the currently generate powerup
         var powerup = null;
-
         //Makes a powerup the player can shoot
         function makePowerup() {
             var powerupX = canvas.width;
@@ -174,7 +181,9 @@
             context.fillStyle = '#FFFFFF';
             context.fillRect(0, 0, 600, 400);
         }
-
+        /* sd96 - 7/7/22
+        In the shoot function, if bigBullets is true, the bullets that are shot will be twice the size of normal bullets
+        */
         // Shoot the bullet (if not already on screen)
         function shoot() {
             if (!shooting) {
@@ -209,6 +218,13 @@
                     gameOver = true;
                 }
             });
+            /* sd96 - 7/7/22
+            Dictates the color of the powerup that will be drawn based on what it does using simple conditional
+            where the boost key of the powerup object is accessed. Then, powerup is drawn after moving it
+            using simple math to change the x coordinate of the powerup and accessing the draw function of the
+            powerup's entity (as previously mentioned powerup has a key entity that is mapped to an object containing
+            the square's x, y, length, speed and draw function)
+            */
             //If powerup exists, moves and draws it and assigns color based on what boost it gives
             if (powerup) {
                 if (powerup.boost === 0) {
@@ -225,6 +241,12 @@
                 powerup.entity.x -= powerup.entity.s;
                 powerup.entity.draw();
             }
+            /* sd96 - 7/7/22
+            If powerup reaches end of screen or it is shot, it is removed and there is 5 second wait before a new one is created.
+            If a powerup collides with the ship, the game is over.
+            If the ship shoots the powerup, the appropriate powerup will be applied (score + 10, big bullets, or faster speed)
+            Big bullets and faster speed last for 5 seconds before reverting back to normal.
+            */
             //If powerup exists, checks if it has reached end of screen and makes new one after 5 seconds
             if (powerup) {
                 if (powerup.entity.x < 0) {
