@@ -108,7 +108,7 @@ if (isset($_POST["name"]) && isset($_POST["description"]) && isset($_POST["categ
             <label class="form-check-label" for="v">Visibible</label>
             <input class="form-check-input" name="visibility" type="checkbox" value="1" id="v">
         </div>
-        <input type="submit" class="btn btn-primary" value="Create Role" />
+        <input type="submit" class="btn btn-primary" value="Create Product" />
     </form>
 </div>
 <?php
