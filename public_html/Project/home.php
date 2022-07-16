@@ -97,7 +97,9 @@ if ($isValid) {
     <thead>
         <th>Name</th>
         <th>Price</th>
-        <th>More Details</th>
+        <?php if (is_logged_in(false)) : ?>
+            <th>Add To Cart</th>
+        <?php endif; ?>
     </thead>
     <tbody>
         <?php if (empty($results)) : ?>
@@ -109,6 +111,9 @@ if ($isValid) {
                 <tr>
                     <td><a href="more_details.php?name=<?php se($result, "name"); ?>"><?php se($result, "name"); ?></a></td>
                     <td>$<?php se($result, "unit_price"); ?></td>
+                    <?php if (is_logged_in()) : ?>
+                        <td><a href="cart.php?name=<?php se($result, "name"); ?>">Add To Cart</a></td>
+                    <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
