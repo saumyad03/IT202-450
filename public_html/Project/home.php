@@ -17,14 +17,14 @@ $results = [];
 //Server Side Validation of Min and Max Price
 $isValid = true;
 if (isset($_POST["min-price"]) && isset($_POST["max-price"])) {
-    if ($_POST["min-price"] > $_POST["max-price"]) {
+    if ($_POST["min-price"] != "" && $_POST["max-price"] != "" && $_POST["min-price"] > $_POST["max-price"]) {
         flash("Minimum price cannot be higher than maximum price", "warning");
         $isValid = false;
     }
 }
 if ($isValid) {
     $db = getDB();
-    $query = "SELECT name, description, category, stock, unit_price FROM Products WHERE visibility=1";
+    $query = "SELECT name, unit_price FROM Products WHERE visibility=1";
     $params = [];
     if (isset($_POST["search"])) {
         $search = $_POST["search"];
@@ -70,7 +70,7 @@ if ($isValid) {
     //Client Side Validation
     function validate(form) {
         let isValid = true;
-        if (form["min-price"].value > form["max-price"].value) {
+        if (form["min-price"].value != "" && form["max-price"].value != "" && form["min-price"].value > form["max-price"].value) {
             flash("Minimum price cannot be higher than maximum price", "warning");
             isValid = false;
         }
@@ -96,9 +96,6 @@ if ($isValid) {
 <table class="table">
     <thead>
         <th>Name</th>
-        <th>Description</th>
-        <th>Category</th>
-        <th>Stock</th>
         <th>Price</th>
     </thead>
     <tbody>
@@ -110,10 +107,7 @@ if ($isValid) {
             <?php foreach ($results as $result) : ?>
                 <tr>
                     <td><?php se($result, "name"); ?></td>
-                    <td><?php se($result, "description"); ?></td>
-                    <td><?php se($result, "category"); ?></td>
-                    <td><?php se($result, "stock"); ?></td>
-                    <td><?php se($result, "unit_price"); ?></td>
+                    <td>$<?php se($result, "unit_price"); ?></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>

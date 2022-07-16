@@ -1,6 +1,5 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
-//Redirects if person trying to access does not have permission
 if (!has_role("Admin") && !has_role("Shop Owner")) {
     flash("You don't have permission to view this page", "warning");
     die(header("Location: $BASE_PATH" . "/home.php"));
@@ -22,40 +21,52 @@ $results = [];
 //Server Side Validation of Min and Max Price
 $isValid = true;
 if (isset($_POST["min-price"]) && isset($_POST["max-price"])) {
-    if ($_POST["min-price"] > $_POST["max-price"]) {
+    if ($_POST["min-price"] != "" && $_POST["max-price"] != "" && $_POST["min-price"] > $_POST["max-price"]) {
         flash("Minimum price cannot be higher than maximum price", "warning");
         $isValid = false;
     }
 }
 if ($isValid) {
     $db = getDB();
-    $query = "SELECT name, description, category, stock, unit_price FROM Products";
+    $query = "SELECT name, unit_price FROM Products";
     $params = [];
     if (isset($_POST["search"])) {
         $search = $_POST["search"];
         if ($search != '') {
-            $query .= " AND name LIKE :search";
+            $query .= " WHERE name LIKE :search";
             $params[":search"] = "%$search%";
         }
     }
     if (isset($_POST["category"])) {
         $category = $_POST["category"];
         if ($category != "all") {
-            $query .= " AND category=:category";
+            if (!strpos($query, "WHERE")) {
+                $query .= " WHERE category=:category";
+            } else {
+                $query .= " AND category=:category";
+            }
             $params[":category"] = $category;
         }
     }
     if (isset($_POST["min-price"])) {
         $min = $_POST["min-price"];
         if ($min != "") {
-            $query .= " AND unit_price >= :min";
+            if (!strpos($query, "WHERE")) {
+                $query .= " WHERE unit_price >= :min";
+            } else {
+                $query .= " AND unit_price >= :min";
+            }
             $params[":min"] = $min;
         }
     }
     if (isset($_POST["max-price"])) {
         $max = $_POST["max-price"];
         if ($max != "") {
-            $query .= " AND unit_price <= :max";
+            if (!strpos($query, "WHERE")) {
+                $query .= " WHERE unit_price <= :max";
+            } else {
+                $query .= " AND unit_price <= :max";
+            }
             $params[":max"] = $max;
         }
     }
@@ -75,7 +86,7 @@ if ($isValid) {
     //Client Side Validation
     function validate(form) {
         let isValid = true;
-        if (form["min-price"].value > form["max-price"].value) {
+        if (form["min-price"].value != "" && form["max-price"].value != "" && form["min-price"].value > form["max-price"].value) {
             flash("Minimum price cannot be higher than maximum price", "warning");
             isValid = false;
         }
@@ -101,9 +112,6 @@ if ($isValid) {
 <table class="table">
     <thead>
         <th>Name</th>
-        <th>Description</th>
-        <th>Category</th>
-        <th>Stock</th>
         <th>Price</th>
     </thead>
     <tbody>
@@ -115,10 +123,7 @@ if ($isValid) {
             <?php foreach ($results as $result) : ?>
                 <tr>
                     <td><?php se($result, "name"); ?></td>
-                    <td><?php se($result, "description"); ?></td>
-                    <td><?php se($result, "category"); ?></td>
-                    <td><?php se($result, "stock"); ?></td>
-                    <td><?php se($result, "unit_price"); ?></td>
+                    <td>$<?php se($result, "unit_price"); ?></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
