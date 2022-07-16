@@ -119,7 +119,6 @@ if ($isValid) {
         <?php endif; ?>
     </tbody>
 </table>
-</table>
 <?php
 require(__DIR__ . "/../../partials/flash.php");
 ?>
