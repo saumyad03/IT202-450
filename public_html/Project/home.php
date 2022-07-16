@@ -97,6 +97,7 @@ if ($isValid) {
     <thead>
         <th>Name</th>
         <th>Price</th>
+        <th>More Details</th>
     </thead>
     <tbody>
         <?php if (empty($results)) : ?>
@@ -106,7 +107,7 @@ if ($isValid) {
         <?php else : ?>
             <?php foreach ($results as $result) : ?>
                 <tr>
-                    <td><?php se($result, "name"); ?></td>
+                    <td><a href="more_details.php?name=<?php se($result, "name"); ?>"><?php se($result, "name"); ?></a></td>
                     <td>$<?php se($result, "unit_price"); ?></td>
                 </tr>
             <?php endforeach; ?>
