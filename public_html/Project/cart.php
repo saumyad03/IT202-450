@@ -5,6 +5,9 @@ if (!is_logged_in(false)) {
     flash("Please log in to or register account to access cart features", "warning");
     die(header("Location: $BASE_PATH" . "/login.php"));
 }
+?>
+<h1 class="left-margin">Cart</h1>
+<?php
 $user_id = get_user_id();
 //Deletes all items
 if (isset($_POST["remove-all"]) && $_POST["remove-all"] == "true") {
@@ -60,8 +63,8 @@ if (isset($_POST["quantity"]) && isset($_POST["id"])) {
     }
 }
 //if there is a query parameter, adds item to the cart
-if (isset($_GET["name"])) {
-    $name = $_GET["name"];
+if (isset($_POST["name"])) {
+    $name = $_POST["name"];
     $db = getDB();
     //get product details using name
     $stmt1 = $db->prepare("SELECT id, unit_price FROM Products WHERE name=:name");
@@ -116,7 +119,6 @@ $total = 0;
         return isValid;
     }
 </script>
-<h1>Cart</h1>
 <table class="table table-striped">
     <thead>
     </thead>

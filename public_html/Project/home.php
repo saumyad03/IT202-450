@@ -1,8 +1,8 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 ?>
+<h1 class="left-margin">Shop</h1>
 <?php
-
 if (is_logged_in(false)) {
     //comment this out if you don't want to see the session variables
     error_log("Session data: " . var_export($_SESSION, true));
@@ -103,7 +103,6 @@ if ($isValid) {
     </div>
 </form>
 <div class="container-fluid">
-    <h1 class="mb-3">Shop</h1>
     <div class="row row-cols-sm-2 row-cols-xs-1 row-cols-md-3 row-cols-lg-6 g-4">
         <?php foreach ($results as $result) : ?>
             <div class="col">
@@ -121,9 +120,10 @@ if ($isValid) {
                     </div>
                     <?php if (is_logged_in()) : ?>
                         <div class="card-footer">
-                            <a href="cart.php?name=<?php se($result, "name"); ?>">
-                                <div class="btn btn-primary">Add To Cart</div>
-                            </a>
+                            <form method="post" action="cart.php">
+                                <input type="hidden" name="name" value="<?php se($result, "name"); ?>" />
+                                <input type="submit" class="btn btn-primary" value="Add to Cart" />
+                            </form>
                         </div>
                     <?php endif; ?>
                 </div>
