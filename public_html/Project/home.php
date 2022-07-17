@@ -96,7 +96,7 @@ if ($isValid) {
 <table class="table">
     <thead>
         <th>Name</th>
-        <?php if (has_role("Admin") || has_role("Shopowner")) : ?>
+        <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
             <th>Edit</th>
         <?php endif; ?>
         <th>Price</th>
@@ -113,7 +113,7 @@ if ($isValid) {
             <?php foreach ($results as $result) : ?>
                 <tr>
                     <td><a href="more_details.php?name=<?php se($result, "name"); ?>"><?php se($result, "name"); ?></a></td>
-                    <?php if (has_role("Admin") || has_role("Shopowner")) : ?>
+                    <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
                         <td><a href="edit_product.php?name=<?php se($result, "name"); ?>">Edit</a></td>
                     <?php endif; ?>
                     <td>$<?php se($result, "unit_price"); ?></td>
