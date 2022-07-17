@@ -5,7 +5,6 @@ if (!has_role("Admin") && !has_role("Shop Owner")) {
     die(header("Location: $BASE_PATH" . "/home.php"));
 }
 ?>
-<h1>Home</h1>
 <?php
 
 if (is_logged_in(false)) {
@@ -93,46 +92,58 @@ if ($isValid) {
         return isValid;
     }
 </script>
-<form method="post" onsubmit="return validate(this)">
-    <label for="search">Search</label>
-    <input name="search" id="search" placeholder="Search" value="<?php se($search); ?>">
-    <label for="category">Category</label>
-    <select name="category" id="category">
-        <option value="all" <?php if (se($category, null, "", false) == "all") : ?>selected<?php endif; ?>>All</option>
-        <option value="sports" <?php if (se($category, null, "", false) == "sports") : ?>selected<?php endif; ?>>Sports</option>
-        <option value="electronics" <?php if (se($category, null, "", false) == "electronics") : ?>selected<?php endif; ?>>Electronics</option>
-        <option value="other" <?php if (se($category, null, "", false) == "other") : ?>selected<?php endif; ?>>Other</option>
-    </select>
-    <label for="min-price">Minimum Price</label>
-    <input type="number" step="0.01" name="min-price" id="min-price" value="<?php se($min); ?>">
-    <label for="max-price">Maximum Price</label>
-    <input type="number" step="0.01" name="max-price" id="max-price" value="<?php se($max); ?>">
-    <input type="submit" value="Search">
+<form class="row offset-lg-2" method="post" onsubmit="return validate(this)">
+    <div class="col-auto">
+        <label class="form-label" for="search">Search</label>
+        <input class="form-control" name="search" id="search" placeholder="Search" value="<?php se($search); ?>">
+    </div>
+    <div class="col-auto">
+        <label class="form-label" for="category">Category</label>
+        <select class="form-select" aria-label="Category" name="category" id="category">
+            <option value="all" <?php if (se($category, null, "", false) == "all") : ?>selected<?php endif; ?>>All</option>
+            <option value="sports" <?php if (se($category, null, "", false) == "sports") : ?>selected<?php endif; ?>>Sports</option>
+            <option value="electronics" <?php if (se($category, null, "", false) == "electronics") : ?>selected<?php endif; ?>>Electronics</option>
+            <option value="other" <?php if (se($category, null, "", false) == "other") : ?>selected<?php endif; ?>>Other</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label" for="min-price">Minimum Price</label>
+        <input class="form-control" type="number" step="0.01" name="min-price" id="min-price" value="<?php se($min); ?>">
+    </div>
+    <div class="col-auto">
+        <label class="form-label" for="max-price">Maximum Price</label>
+        <input class="form-control" type="number" step="0.01" name="max-price" id="max-price" value="<?php se($max); ?>">
+    </div>
+    <div class="col-auto">
+        <div class="form-label invisible">Blank Text</div>
+        <input class="form-control btn btn-primary" type="submit" value="Search">
+    </div>
 </form>
-<table class="table">
-    <thead>
-        <th>Name</th>
-        <th>Edit</th>
-        <th>Price</th>
-    </thead>
-    <tbody>
-        <?php if (empty($results)) : ?>
-            <tr>
-                <td colspan="100%">No products</td>
-            </tr>
-        <?php else : ?>
-            <?php foreach ($results as $result) : ?>
-                <tr>
-                    <td><a href="more_details.php?name=<?php se($result, "name"); ?>"><?php se($result, "name"); ?></a></td>
-                    <td><a href="edit_product.php?name=<?php se($result, "name"); ?>">Edit</a></td>
-                    <td>$<?php se($result, "unit_price"); ?></td>
-                    <td><a href="cart.php?name=<?php se($result, "name"); ?>">Add To Cart</a></td>
-                </tr>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </tbody>
-</table>
-</table>
+<div class="container-fluid">
+    <h1>All Products</h1>
+    <div class="row row-cols-sm-2 row-cols-xs-1 row-cols-md-3 row-cols-lg-6 g-4">
+        <?php foreach ($results as $result) : ?>
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <a class="text-dark text-decoration-none" href="more_details.php?name=<?php se($result, "name"); ?>">
+                            <h5 class="card-title"><?php se($result, "name"); ?></h5>
+                        </a>
+                        <p class="card-text">$<?php se($result, "unit_price"); ?></p>
+                        <a href="edit_product.php?name=<?php se($result, "name"); ?>">
+                            <div class="btn btn-primary">Edit</div>
+                        </a>
+                    </div>
+                    <div class="card-footer">
+                        <a href="cart.php?name=<?php se($result, "name"); ?>">
+                            <div class="btn btn-primary">Add To Cart</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
 <?php
 require(__DIR__ . "/../../partials/flash.php");
 ?>

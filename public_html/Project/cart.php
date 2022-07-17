@@ -117,15 +117,8 @@ $total = 0;
     }
 </script>
 <h1>Cart</h1>
-<table class="table">
+<table class="table table-striped">
     <thead>
-        <th>Name</th>
-        <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
-            <th>Edit</th>
-        <?php endif; ?>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Delete</th>
     </thead>
     <tbody>
         <?php if (empty($results)) : ?>
@@ -137,34 +130,36 @@ $total = 0;
                 <?php $subtotal = se($result, "unit_price", "", false) * se($result, "desired_quantity", "", false); ?>
                 <?php $total += $subtotal ?>
                 <tr>
-                    <th><a href="more_details.php?name=<?php se($result, "name"); ?>"><?php se($result, "name"); ?></a></th>
+                    <th><a class="text-decoration-none text-dark" href="more_details.php?name=<?php se($result, "name"); ?>"><?php se($result, "name"); ?></a></th>
                     <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
-                        <td><a href="edit_product.php?name=<?php se($result, "name"); ?>">Edit</a></td>
+                        <td><a href="edit_product.php?name=<?php se($result, "name"); ?>">
+                                <div class="btn btn-primary">Edit</div>
+                            </a></td>
                     <?php endif; ?>
                     <th>$<?php se($result, "unit_price"); ?></th>
-                    <th>
-                        <form method="post" onsubmit="return validate(this)">
-                            <input name="quantity" type="number" min="0" value="<?php se($result, "desired_quantity"); ?>">
-                            <input type="hidden" name="id" value="<?php se($result, "id"); ?>">
-                            <input type="Submit" value="Update">
-                        </form>
-                    </th>
+                        <th>
+                            <form method="post" onsubmit="return validate(this)">
+                                <input class="" name="quantity" type="number" min="0" value="<?php se($result, "desired_quantity"); ?>">
+                                <input type="hidden" name="id" value="<?php se($result, "id"); ?>">
+                                <input class="btn btn-primary" type="Submit" value="Update">
+                            </form>
+                        </th>
                     <th>
                         <form method="post">
                             <input type="hidden" name="remove-id" value="<?php se($result, "id"); ?>">
-                            <input type="Submit" value="Remove">
+                            <input class="btn btn-danger" type="Submit" value="Remove">
                         </form>
                     </th>
                     <th>Subtotal: $<?php echo (se($subtotal)); ?></th>
                 </tr>
             <?php endforeach; ?>
-            <td colspan="100%">Total: <?php se($total); ?></td>
         <?php endif; ?>
     </tbody>
 </table>
+<div id="total-label">Total: $<?php se($total); ?></div>
 <form method="post">
     <input type="hidden" name="remove-all" value="true">
-    <input type="Submit" value="Delete All Cart Items">
+    <input id="cart-remove-all" class="btn btn-danger" type="Submit" value="Delete All Cart Items">
 </form>
 <?php
 require(__DIR__ . "/../../partials/flash.php");
