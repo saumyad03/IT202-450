@@ -78,7 +78,6 @@ if (isset($_POST["name"])) {
         try {
             $stmt2->execute([":prod_id" => $product_id, "user_id" => $user_id, ":price" => $unit_price]);
             flash("Successfully added $name to cart", "success");
-            die(header("Location: " . get_url("cart.php")));
         } catch (PDOException $e) {
             if ($e->errorInfo[1] === 1062) {
                 flash("This product is already in your cart.", "info");
