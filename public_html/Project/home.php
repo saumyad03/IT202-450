@@ -96,6 +96,9 @@ if ($isValid) {
 <table class="table">
     <thead>
         <th>Name</th>
+        <?php if (has_role("Admin") || has_role("Shopowner")) : ?>
+            <th>Edit</th>
+        <?php endif; ?>
         <th>Price</th>
         <?php if (is_logged_in(false)) : ?>
             <th>Add To Cart</th>
@@ -110,6 +113,9 @@ if ($isValid) {
             <?php foreach ($results as $result) : ?>
                 <tr>
                     <td><a href="more_details.php?name=<?php se($result, "name"); ?>"><?php se($result, "name"); ?></a></td>
+                    <?php if (has_role("Admin") || has_role("Shopowner")) : ?>
+                        <td><a href="edit_product.php?name=<?php se($result, "name"); ?>">Edit</a></td>
+                    <?php endif; ?>
                     <td>$<?php se($result, "unit_price"); ?></td>
                     <?php if (is_logged_in()) : ?>
                         <td><a href="cart.php?name=<?php se($result, "name"); ?>">Add To Cart</a></td>

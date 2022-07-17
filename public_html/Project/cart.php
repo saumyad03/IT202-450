@@ -11,7 +11,7 @@ if (isset($_POST["remove-all"]) && $_POST["remove-all"] == "true") {
     $db = getDB();
     $stmt = $db->prepare("DELETE FROM Cart WHERE user_id=:user_id");
     try {
-        $stmt->execute([":user_id"=>$user_id]);
+        $stmt->execute([":user_id" => $user_id]);
         flash("Successfully deleted all cart items", "success");
     } catch (PDOException $e) {
         flash("An unknown error occurred when trying to delete all your cart items", "warning");
@@ -24,7 +24,7 @@ if (isset($_POST["remove-id"])) {
     $db = getDB();
     $stmt = $db->prepare("DELETE FROM Cart WHERE user_id=:user_id AND product_id=:prod_id");
     try {
-        $stmt->execute([":user_id"=>$user_id, ":prod_id"=>$id]);
+        $stmt->execute([":user_id" => $user_id, ":prod_id" => $id]);
         flash("Successfully removed item from your cart", "success");
     } catch (PDOException $e) {
         flash("An unknown error ocrrured when trying to update your cart", "warning");
@@ -42,7 +42,7 @@ if (isset($_POST["quantity"]) && isset($_POST["id"])) {
     } else if ($quantity == 0) {
         $stmt = $db->prepare("DELETE FROM Cart WHERE user_id=:user_id AND product_id=:prod_id");
         try {
-            $stmt->execute([":user_id"=>$user_id, ":prod_id"=>$id]);
+            $stmt->execute([":user_id" => $user_id, ":prod_id" => $id]);
             flash("Successfully removed item from your cart", "success");
         } catch (PDOException $e) {
             flash("An unknown error ocrrured when trying to update your cart", "warning");
@@ -51,7 +51,7 @@ if (isset($_POST["quantity"]) && isset($_POST["id"])) {
     } else {
         $stmt = $db->prepare("UPDATE Cart SET desired_quantity=:quantity WHERE user_id=:user_id AND product_id=:prod_id");
         try {
-            $stmt->execute([":quantity"=>$quantity,":user_id"=>$user_id, ":prod_id"=>$id]);
+            $stmt->execute([":quantity" => $quantity, ":user_id" => $user_id, ":prod_id" => $id]);
             flash("Successfully updated your cart", "success");
         } catch (PDOException $e) {
             flash("An unknown error occurred when trying to update your cart", "warning");
@@ -120,6 +120,9 @@ $total = 0;
 <table class="table">
     <thead>
         <th>Name</th>
+        <?php if (has_role("Admin") || has_role("Shopowner")) : ?>
+            <th>Edit</th>
+        <?php endif; ?>
         <th>Price</th>
         <th>Quantity</th>
         <th>Delete</th>
@@ -135,6 +138,9 @@ $total = 0;
                 <?php $total += $subtotal ?>
                 <tr>
                     <th><a href="more_details.php?name=<?php se($result, "name"); ?>"><?php se($result, "name"); ?></a></th>
+                    <?php if (has_role("Admin") || has_role("Shopowner")) : ?>
+                        <td><a href="edit_product.php?name=<?php se($result, "name"); ?>">Edit</a></td>
+                    <?php endif; ?>
                     <th>$<?php se($result, "unit_price"); ?></th>
                     <th>
                         <form method="post" onsubmit="return validate(this)">
@@ -153,7 +159,7 @@ $total = 0;
                 </tr>
             <?php endforeach; ?>
             <td colspan="100%">Total: <?php se($total); ?></td>
-            <?php endif; ?>
+        <?php endif; ?>
     </tbody>
 </table>
 <form method="post">

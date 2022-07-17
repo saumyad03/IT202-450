@@ -57,14 +57,20 @@ session_start();
                         </ul>
                     </li>
                 <?php endif; ?>
-                <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
-                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('add_product.php'); ?>">Add Product</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('see_products.php'); ?>">See Products</a></li>
-                <?php endif; ?>
-                <?php if (is_logged_in()) : ?>
-                    <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('logout.php'); ?>">Logout</a></li>
-                <?php endif; ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Shopowner Actions
+                    </a>
+                    <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
+                        <ul class="dropdown-menu bg-secondary" aria-labelledby="productsDropdown">
+                            <li><a class=dropdown-item href="<?php echo get_url('add_product.php'); ?>">Add Product</a></li>
+                            <li><a class=dropdown-item href="<?php echo get_url('see_products.php'); ?>">See Products</a></li>
+                        </ul>
+                    <?php endif; ?>
+                    <?php if (is_logged_in()) : ?>
+                <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo get_url('logout.php'); ?>">Logout</a></li>
+            <?php endif; ?>
             </ul>
         </div>
     </div>
