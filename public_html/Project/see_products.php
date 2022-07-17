@@ -131,7 +131,7 @@ if ($isValid) {
                         </a>
                         <p class="card-text">$<?php se($result, "unit_price"); ?></p>
                         <a href="edit_product.php?name=<?php se($result, "name"); ?>">
-                            <div class="btn btn-primary">Edit</div>
+                            <div class="btn btn-secondary">Edit</div>
                         </a>
                     </div>
                     <div class="card-footer">

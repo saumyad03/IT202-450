@@ -25,7 +25,7 @@ else {
     <div class="display-6">$<?php se($results, "unit_price") ?></div>
     <p><?php se($results, "description") ?><br>Stock: <?php se($results, "stock") ?><br>Category: <?php se($results, "category") ?></p>
     <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
-        <a href="edit_product.php?name=<?php se($name); ?>"><div class="btn btn-primary">Edit</div></a>
+        <a href="edit_product.php?name=<?php se($name); ?>"><div class="btn btn-secondary">Edit</div></a>
     <?php endif; ?>
     <?php if (is_logged_in()) : ?>
         <a href="cart.php?name=<?php se($name); ?>"><div class="btn btn-primary">Add To Cart</div></a>

@@ -133,7 +133,7 @@ $total = 0;
                     <th><a class="text-decoration-none text-dark" href="more_details.php?name=<?php se($result, "name"); ?>"><?php se($result, "name"); ?></a></th>
                     <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
                         <td><a href="edit_product.php?name=<?php se($result, "name"); ?>">
-                                <div class="btn btn-primary">Edit</div>
+                                <div class="btn btn-secondary">Edit</div>
                             </a></td>
                     <?php endif; ?>
                     <th>$<?php se($result, "unit_price"); ?></th>

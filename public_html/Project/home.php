@@ -115,7 +115,7 @@ if ($isValid) {
                         <p class="card-text">$<?php se($result, "unit_price"); ?></p>
                         <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
                             <a href="edit_product.php?name=<?php se($result, "name"); ?>">
-                                <div class="btn btn-primary">Edit</div>
+                                <div class="btn btn-secondary">Edit</div>
                             </a>
                         <?php endif; ?>
                     </div>
