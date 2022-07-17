@@ -5,6 +5,7 @@ require(__DIR__ . "/../../partials/nav.php");
 <?php
 //if no query parameter redirect to home page
 if (!isset($_GET["name"])) {
+    flash("You must be viewing a product to see this page");
     die(header("Location: $BASE_PATH" . "/home.php"));
 } //Otherwise get more details
 else {
