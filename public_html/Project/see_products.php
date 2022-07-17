@@ -112,6 +112,7 @@ if ($isValid) {
 <table class="table">
     <thead>
         <th>Name</th>
+        <th>Edit</th>
         <th>Price</th>
     </thead>
     <tbody>
@@ -123,10 +124,9 @@ if ($isValid) {
             <?php foreach ($results as $result) : ?>
                 <tr>
                     <td><a href="more_details.php?name=<?php se($result, "name"); ?>"><?php se($result, "name"); ?></a></td>
+                    <td><a href="edit_product.php?name=<?php se($result, "name"); ?>">Edit</a></td>
                     <td>$<?php se($result, "unit_price"); ?></td>
-                    <?php if (is_logged_in()) : ?>
-                        <td><a href="cart.php?name=<?php se($result, "name"); ?>">Add To Cart</a></td>
-                    <?php endif; ?>
+                    <td><a href="cart.php?name=<?php se($result, "name"); ?>">Add To Cart</a></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
