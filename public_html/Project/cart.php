@@ -6,6 +6,19 @@ if (!is_logged_in(false)) {
     die(header("Location: $BASE_PATH" . "/login.php"));
 }
 $user_id = get_user_id();
+//Deletes item
+if (isset($_POST["remove-id"])) {
+    $id = $_POST["remove-id"];
+    $db = getDB();
+    $stmt = $db->prepare("DELETE FROM Cart WHERE user_id=:user_id AND product_id=:prod_id");
+    try {
+        $stmt->execute([":user_id"=>$user_id, ":prod_id"=>$id]);
+        flash("Successfully removed item from your cart", "success");
+    } catch (PDOException $e) {
+        flash("An unknown error ocrrured when trying to update your cart", "warning");
+        error_log(var_export($e->errorInfo, true));
+    }
+}
 //Updates quantity
 if (isset($_POST["quantity"]) && isset($_POST["id"])) {
     $quantity = $_POST["quantity"];
@@ -96,6 +109,7 @@ $total = 0;
         <th>Name</th>
         <th>Price</th>
         <th>Quantity</th>
+        <th>Delete</th>
     </thead>
     <tbody>
         <?php if (empty($results)) : ?>
@@ -114,6 +128,12 @@ $total = 0;
                             <input name="quantity" type="number" min="0" value="<?php se($result, "desired_quantity"); ?>">
                             <input type="hidden" name="id" value="<?php se($result, "id"); ?>">
                             <input type="Submit" value="Update">
+                        </form>
+                    </th>
+                    <th>
+                        <form method="post">
+                            <input type="hidden" name="remove-id" value="<?php se($result, "id"); ?>">
+                            <input type="Submit" value="Remove">
                         </form>
                     </th>
                     <th>Subtotal: $<?php echo (se($subtotal)); ?></th>
