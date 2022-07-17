@@ -62,7 +62,7 @@ if (isset($_POST["quantity"]) && isset($_POST["id"])) {
         }
     }
 }
-//if there is a query parameter, adds item to the cart
+//if name is set, adds item to cart
 if (isset($_POST["name"])) {
     $name = $_POST["name"];
     $db = getDB();
