@@ -5,6 +5,7 @@ if (!has_role("Admin") && !has_role("Shop Owner")) {
     die(header("Location: $BASE_PATH" . "/home.php"));
 }
 ?>
+<h1 class="left-margin">All Products</h1>
 <?php
 
 if (is_logged_in(false)) {
@@ -120,7 +121,6 @@ if ($isValid) {
     </div>
 </form>
 <div class="container-fluid">
-    <h1>All Products</h1>
     <div class="row row-cols-sm-2 row-cols-xs-1 row-cols-md-3 row-cols-lg-6 g-4">
         <?php foreach ($results as $result) : ?>
             <div class="col">
@@ -131,13 +131,14 @@ if ($isValid) {
                         </a>
                         <p class="card-text">$<?php se($result, "unit_price"); ?></p>
                         <a href="edit_product.php?name=<?php se($result, "name"); ?>">
-                            <div class="btn btn-primary">Edit</div>
+                            <div class="btn btn-secondary">Edit</div>
                         </a>
                     </div>
                     <div class="card-footer">
-                        <a href="cart.php?name=<?php se($result, "name"); ?>">
-                            <div class="btn btn-primary">Add To Cart</div>
-                        </a>
+                        <form method="post" action="cart.php">
+                            <input type="hidden" name="name" value="<?php se($result, "name"); ?>" />
+                            <input type="submit" class="btn btn-primary" value="Add to Cart" />
+                        </form>
                     </div>
                 </div>
             </div>
