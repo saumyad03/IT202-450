@@ -15,18 +15,8 @@ if (is_logged_in(false)) {
 //default variables needed for conditional html below
 $category = 'all';
 $search = '';
-$min = '';
-$max = '';
+$sort = 'none';
 $results = [];
-//Server Side Validation of Min and Max Price
-$isValid = true;
-if (isset($_POST["min-price"]) && isset($_POST["max-price"])) {
-    if ($_POST["min-price"] != "" && $_POST["max-price"] != "" && $_POST["min-price"] > $_POST["max-price"]) {
-        flash("Minimum price cannot be higher than maximum price", "warning");
-        $isValid = false;
-    }
-}
-if ($isValid) {
     $db = getDB();
     $query = "SELECT name, unit_price FROM Products";
     $params = [];
@@ -48,29 +38,22 @@ if ($isValid) {
             $params[":category"] = $category;
         }
     }
-    if (isset($_POST["min-price"])) {
-        $min = $_POST["min-price"];
-        if ($min != "") {
-            if (!strpos($query, "WHERE")) {
-                $query .= " WHERE unit_price >= :min";
+    if (isset($_POST["sort"])) {
+        $sort = $_POST["sort"];
+        if (!($sort == "none")) {
+            if ($sort == "low-high") {
+                $query .= " ORDER BY unit_price ASC";
             } else {
-                $query .= " AND unit_price >= :min";
+                $query .= " ORDER BY unit_price DESC";
             }
-            $params[":min"] = $min;
         }
     }
-    if (isset($_POST["max-price"])) {
-        $max = $_POST["max-price"];
-        if ($max != "") {
-            if (!strpos($query, "WHERE")) {
-                $query .= " WHERE unit_price <= :max";
-            } else {
-                $query .= " AND unit_price <= :max";
-            }
-            $params[":max"] = $max;
-        }
+    if (!strpos($query, "ORDER BY")) {
+        $query .= " ORDER BY modified DESC";
+    } else {
+        $query .= " , modified DESC";
     }
-    $query .= " ORDER BY modified DESC LIMIT 10";
+    $query .= " LIMIT 10";
     $stmt = $db->prepare($query);
     try {
         $stmt->execute($params);
@@ -79,20 +62,7 @@ if ($isValid) {
         flash("An unknown error occurred with loading the products", "warning");
         error_log(var_export($e->errorInfo, true));
     }
-}
-//TODO CACHE DATABASE RESULTS
 ?>
-<script>
-    //Client Side Validation
-    function validate(form) {
-        let isValid = true;
-        if (form["min-price"].value != "" && form["max-price"].value != "" && form["min-price"].value > form["max-price"].value) {
-            flash("Minimum price cannot be higher than maximum price", "warning");
-            isValid = false;
-        }
-        return isValid;
-    }
-</script>
 <form class="row offset-lg-2" method="post" onsubmit="return validate(this)">
     <div class="col-auto">
         <label class="form-label" for="search">Search</label>
@@ -108,12 +78,12 @@ if ($isValid) {
         </select>
     </div>
     <div class="col-auto">
-        <label class="form-label" for="min-price">Minimum Price</label>
-        <input class="form-control" type="number" step="0.01" name="min-price" id="min-price" value="<?php se($min); ?>">
-    </div>
-    <div class="col-auto">
-        <label class="form-label" for="max-price">Maximum Price</label>
-        <input class="form-control" type="number" step="0.01" name="max-price" id="max-price" value="<?php se($max); ?>">
+        <label class="form-label" for="sort">Price Sort</label>
+        <select class="form-select" aria-label="Sort" name="sort" id="sort">
+            <option value="none" <?php if (se($sort, null, "", false) == "none") : ?>selected<?php endif; ?>>None</option>
+            <option value="low-high" <?php if (se($sort, null, "", false) == "low-high") : ?>selected<?php endif; ?>>Low-High</option>
+            <option value="high-low" <?php if (se($sort, null, "", false) == "high-low") : ?>selected<?php endif; ?>>High-Low</option>
+        </select>
     </div>
     <div class="col-auto">
         <div class="form-label invisible">Blank Text</div>
