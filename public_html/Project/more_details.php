@@ -1,7 +1,7 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 ?>
-<h1>More Details</h1>
+<h1 class="left-margin">More Details</h1>
 <?php
 //if no query parameter redirect to home page
 if (!isset($_GET["name"])) {
