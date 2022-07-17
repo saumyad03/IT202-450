@@ -21,16 +21,14 @@ else {
 }
 ?>
 <ul>
-    <li><?php se($name) ?></li>
-    <li><?php se($results, "description") ?></li>
-    <li>$<?php se($results, "unit_price") ?></li>
-    <li>Stock: <?php se($results, "stock") ?></li>
-    <li>Category: <?php se($results, "category") ?></li>
-    <?php if (is_logged_in()) : ?>
-        <li><a href="cart.php?name=<?php se($name); ?>">Add To Cart</a></li>
-    <?php endif; ?>
+    <div class="display-3"><?php se($name) ?></div>
+    <div class="display-6">$<?php se($results, "unit_price") ?></div>
+    <p><?php se($results, "description") ?><br>Stock: <?php se($results, "stock") ?><br>Category: <?php se($results, "category") ?></p>
     <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
-        <li><a href="edit_product.php?name=<?php se($name); ?>">Edit</a></li>
+        <a href="edit_product.php?name=<?php se($name); ?>"><div class="btn btn-primary">Edit</div></a>
+    <?php endif; ?>
+    <?php if (is_logged_in()) : ?>
+        <a href="cart.php?name=<?php se($name); ?>"><div class="btn btn-primary">Add To Cart</div></a>
     <?php endif; ?>
 </ul>
 <?php
