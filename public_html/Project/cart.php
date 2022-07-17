@@ -120,7 +120,7 @@ $total = 0;
 <table class="table">
     <thead>
         <th>Name</th>
-        <?php if (has_role("Admin") || has_role("Shopowner")) : ?>
+        <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
             <th>Edit</th>
         <?php endif; ?>
         <th>Price</th>
@@ -138,7 +138,7 @@ $total = 0;
                 <?php $total += $subtotal ?>
                 <tr>
                     <th><a href="more_details.php?name=<?php se($result, "name"); ?>"><?php se($result, "name"); ?></a></th>
-                    <?php if (has_role("Admin") || has_role("Shopowner")) : ?>
+                    <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
                         <td><a href="edit_product.php?name=<?php se($result, "name"); ?>">Edit</a></td>
                     <?php endif; ?>
                     <th>$<?php se($result, "unit_price"); ?></th>
