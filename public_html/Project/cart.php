@@ -6,6 +6,18 @@ if (!is_logged_in(false)) {
     die(header("Location: $BASE_PATH" . "/login.php"));
 }
 $user_id = get_user_id();
+//Deletes all items
+if (isset($_POST["remove-all"]) && $_POST["remove-all"] == "true") {
+    $db = getDB();
+    $stmt = $db->prepare("DELETE FROM Cart WHERE user_id=:user_id");
+    try {
+        $stmt->execute([":user_id"=>$user_id]);
+        flash("Successfully deleted all cart items", "success");
+    } catch (PDOException $e) {
+        flash("An unknown error occurred when trying to delete all your cart items", "warning");
+        error_log(var_export($e->errorInfo, true));
+    }
+}
 //Deletes item
 if (isset($_POST["remove-id"])) {
     $id = $_POST["remove-id"];
@@ -63,6 +75,7 @@ if (isset($_GET["name"])) {
         try {
             $stmt2->execute([":prod_id" => $product_id, "user_id" => $user_id, ":price" => $unit_price]);
             flash("Successfully added $name to cart", "success");
+            die(header("Location: " . get_url("cart.php")));
         } catch (PDOException $e) {
             if ($e->errorInfo[1] === 1062) {
                 flash("This product is already in your cart.", "info");
@@ -139,10 +152,14 @@ $total = 0;
                     <th>Subtotal: $<?php echo (se($subtotal)); ?></th>
                 </tr>
             <?php endforeach; ?>
-            <td colspan="100%">Total: <?php se($total); ?></th>
+            <td colspan="100%">Total: <?php se($total); ?></td>
             <?php endif; ?>
     </tbody>
 </table>
+<form method="post">
+    <input type="hidden" name="remove-all" value="true">
+    <input type="Submit" value="Delete All Cart Items">
+</form>
 <?php
 require(__DIR__ . "/../../partials/flash.php");
 ?>
