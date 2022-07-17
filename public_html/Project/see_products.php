@@ -17,51 +17,52 @@ $category = 'all';
 $search = '';
 $sort = 'none';
 $results = [];
-    $db = getDB();
-    $query = "SELECT name, unit_price FROM Products";
-    $params = [];
-    if (isset($_POST["search"])) {
-        $search = $_POST["search"];
-        if ($search != '') {
-            $query .= " WHERE name LIKE :search";
-            $params[":search"] = "%$search%";
+$db = getDB();
+$query = "SELECT name, unit_price, visibility FROM Products";
+$params = [];
+//sd96 - 7/17/22
+if (isset($_POST["search"])) {
+    $search = $_POST["search"];
+    if ($search != '') {
+        $query .= " WHERE name LIKE :search";
+        $params[":search"] = "%$search%";
+    }
+}
+if (isset($_POST["category"])) {
+    $category = $_POST["category"];
+    if ($category != "all") {
+        if (!strpos($query, "WHERE")) {
+            $query .= " WHERE category=:category";
+        } else {
+            $query .= " AND category=:category";
+        }
+        $params[":category"] = $category;
+    }
+}
+if (isset($_POST["sort"])) {
+    $sort = $_POST["sort"];
+    if (!($sort == "none")) {
+        if ($sort == "low-high") {
+            $query .= " ORDER BY unit_price ASC";
+        } else {
+            $query .= " ORDER BY unit_price DESC";
         }
     }
-    if (isset($_POST["category"])) {
-        $category = $_POST["category"];
-        if ($category != "all") {
-            if (!strpos($query, "WHERE")) {
-                $query .= " WHERE category=:category";
-            } else {
-                $query .= " AND category=:category";
-            }
-            $params[":category"] = $category;
-        }
-    }
-    if (isset($_POST["sort"])) {
-        $sort = $_POST["sort"];
-        if (!($sort == "none")) {
-            if ($sort == "low-high") {
-                $query .= " ORDER BY unit_price ASC";
-            } else {
-                $query .= " ORDER BY unit_price DESC";
-            }
-        }
-    }
-    if (!strpos($query, "ORDER BY")) {
-        $query .= " ORDER BY modified DESC";
-    } else {
-        $query .= " , modified DESC";
-    }
-    $query .= " LIMIT 10";
-    $stmt = $db->prepare($query);
-    try {
-        $stmt->execute($params);
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        flash("An unknown error occurred with loading the products", "warning");
-        error_log(var_export($e->errorInfo, true));
-    }
+}
+if (!strpos($query, "ORDER BY")) {
+    $query .= " ORDER BY modified DESC";
+} else {
+    $query .= " , modified DESC";
+}
+$query .= " LIMIT 10";
+$stmt = $db->prepare($query);
+try {
+    $stmt->execute($params);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    flash("An unknown error occurred with loading the products", "warning");
+    error_log(var_export($e->errorInfo, true));
+}
 ?>
 <form class="row offset-lg-2" method="post" onsubmit="return validate(this)">
     <div class="col-auto">
@@ -99,6 +100,11 @@ $results = [];
                         <a class="text-dark text-decoration-none" href="more_details.php?name=<?php se($result, "name"); ?>">
                             <h5 class="card-title"><?php se($result, "name"); ?></h5>
                         </a>
+                        <?php if (se($result, "visibility", "", false) == "0") : ?>
+                            <p class="text-secondary">Not Visible</p>
+                        <?php else : ?>
+                            <p>Visible</p>
+                        <?php endif; ?>
                         <p class="card-text">$<?php se($result, "unit_price"); ?></p>
                         <a href="edit_product.php?name=<?php se($result, "name"); ?>">
                             <div class="btn btn-secondary">Edit</div>
