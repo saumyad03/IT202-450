@@ -1,8 +1,13 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
+if (!has_role("Admin") && !has_role("Shop Owner")) {
+    flash("You don't have permission to view this page", "warning");
+    die(header("Location: $BASE_PATH" . "/home.php"));
+}
 ?>
-<h1 class="left-margin">Shop</h1>
+<h1 class="left-margin">All Products</h1>
 <?php
+
 if (is_logged_in(false)) {
     //comment this out if you don't want to see the session variables
     error_log("Session data: " . var_export($_SESSION, true));
@@ -13,19 +18,24 @@ $search = '';
 $sort = 'none';
 $results = [];
 $db = getDB();
-$query = "SELECT name, unit_price FROM Products WHERE visibility=1";
+$query = "SELECT name, unit_price, visibility FROM Products";
 $params = [];
+//sd96 - 7/17/22
 if (isset($_POST["search"])) {
     $search = $_POST["search"];
     if ($search != '') {
-        $query .= " AND name LIKE :search";
+        $query .= " WHERE name LIKE :search";
         $params[":search"] = "%$search%";
     }
 }
 if (isset($_POST["category"])) {
     $category = $_POST["category"];
     if ($category != "all") {
-        $query .= " AND category=:category";
+        if (!strpos($query, "WHERE")) {
+            $query .= " WHERE category=:category";
+        } else {
+            $query .= " AND category=:category";
+        }
         $params[":category"] = $category;
     }
 }
@@ -90,21 +100,22 @@ try {
                         <a class="text-dark text-decoration-none" href="more_details.php?name=<?php se($result, "name"); ?>">
                             <h5 class="card-title"><?php se($result, "name"); ?></h5>
                         </a>
-                        <p class="card-text">$<?php se($result, "unit_price"); ?></p>
-                        <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
-                            <a href="edit_product.php?name=<?php se($result, "name"); ?>">
-                                <div class="btn btn-secondary">Edit</div>
-                            </a>
+                        <?php if (se($result, "visibility", "", false) == "0") : ?>
+                            <p class="text-secondary">Not Visible</p>
+                        <?php else : ?>
+                            <p>Visible</p>
                         <?php endif; ?>
+                        <p class="card-text">$<?php se($result, "unit_price"); ?></p>
+                        <a href="edit_product.php?name=<?php se($result, "name"); ?>">
+                            <div class="btn btn-secondary">Edit</div>
+                        </a>
                     </div>
-                    <?php if (is_logged_in()) : ?>
-                        <div class="card-footer">
-                            <form method="post" action="cart.php">
-                                <input type="hidden" name="name" value="<?php se($result, "name"); ?>" />
-                                <input type="submit" class="btn btn-primary" value="Add to Cart" />
-                            </form>
-                        </div>
-                    <?php endif; ?>
+                    <div class="card-footer">
+                        <form method="post" action="cart.php">
+                            <input type="hidden" name="name" value="<?php se($result, "name"); ?>" />
+                            <input type="submit" class="btn btn-primary" value="Add to Cart" />
+                        </form>
+                    </div>
                 </div>
             </div>
         <?php endforeach; ?>
