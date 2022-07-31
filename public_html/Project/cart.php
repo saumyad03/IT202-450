@@ -138,13 +138,13 @@ $total = 0;
                             </a></td>
                     <?php endif; ?>
                     <th>$<?php se($result, "unit_price"); ?></th>
-                        <th>
-                            <form method="post" onsubmit="return validate(this)">
-                                <input class="" name="quantity" type="number" min="0" value="<?php se($result, "desired_quantity"); ?>">
-                                <input type="hidden" name="id" value="<?php se($result, "id"); ?>">
-                                <input class="btn btn-primary" type="Submit" value="Update">
-                            </form>
-                        </th>
+                    <th>
+                        <form method="post" onsubmit="return validate(this)">
+                            <input class="" name="quantity" type="number" min="0" value="<?php se($result, "desired_quantity"); ?>">
+                            <input type="hidden" name="id" value="<?php se($result, "id"); ?>">
+                            <input class="btn btn-primary" type="Submit" value="Update">
+                        </form>
+                    </th>
                     <th>
                         <form method="post">
                             <input type="hidden" name="remove-id" value="<?php se($result, "id"); ?>">
@@ -158,9 +158,13 @@ $total = 0;
     </tbody>
 </table>
 <div id="total-label">Total: $<?php se($total); ?></div>
-<form method="post">
+<form class="cart-footer" method="post">
     <input type="hidden" name="remove-all" value="true">
     <input id="cart-remove-all" class="btn btn-danger" type="Submit" value="Delete All Cart Items">
+</form>
+<form class="cart-footer" method="post">
+    <input type="hidden" name="user-id" value="<?php se($user_id) ?>">
+    <input id="cart-place-order" class="btn btn-success" type="Submit" value="Place Order">
 </form>
 <?php
 require(__DIR__ . "/../../partials/flash.php");
