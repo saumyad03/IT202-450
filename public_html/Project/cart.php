@@ -103,7 +103,7 @@ $db = getDB();
 $user_id = get_user_id();
 $results = [];
 //get name, unit_price, desired_quantity for card
-$stmt = $db->prepare("SELECT Products.id, Products.name, Products.unit_price, Cart.desired_quantity, Products.stock FROM Cart LEFT JOIN Products ON Cart.product_id = Products.id WHERE Cart.user_id = :user_id");
+$stmt = $db->prepare("SELECT Products.id, Products.name, Cart.unit_price, Cart.desired_quantity, Products.stock FROM Cart LEFT JOIN Products ON Cart.product_id = Products.id WHERE Cart.user_id = :user_id");
 try {
     $stmt->execute([":user_id" => $user_id]);
     $results = $stmt->fetchALL(PDO::FETCH_ASSOC);
@@ -167,10 +167,7 @@ $total = 0;
     <input type="hidden" name="remove-all" value="true">
     <input id="cart-remove-all" class="btn btn-danger" type="Submit" value="Delete All Cart Items">
 </form>
-<form class="cart-footer" method="post">
-    <input type="hidden" name="user-id" value="<?php se($user_id) ?>">
-    <input id="cart-place-order" class="btn btn-success" type="Submit" value="Place Order">
-</form>
+<a class="cart-footer btn btn-success" href="checkout.php">Place Order</a>
 <?php
 require(__DIR__ . "/../../partials/flash.php");
 ?>
