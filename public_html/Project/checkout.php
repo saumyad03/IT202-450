@@ -5,6 +5,8 @@ if (!is_logged_in(false)) {
     flash("Please log in to or register account to checkout cart items", "warning");
     die(header("Location: $BASE_PATH" . "/login.php"));
 }
+//Default value for order id (doesn't submit form)
+$order_id = "";
 ?>
 <?php
 $db = getDB();
@@ -31,11 +33,12 @@ $total = 0;
     <tbody>
         <?php if (empty($results)) : ?>
             <tr>
-                <td colspan="100%">Cart is empty</td>
+                <td colspan="100%">Order is empty</td>
             </tr>
         <?php else : ?>
             <?php foreach ($results as $result) : ?>
-                <?php //calculates the subtotal using price and quantity, assigns it to a variable, adds it to the current total for each iteration of foreach loop ?>
+                <?php //calculates the subtotal using price and quantity, assigns it to a variable, adds it to the current total for each iteration of foreach loop 
+                ?>
                 <?php $subtotal = se($result, "product_price", "", false) * se($result, "desired_quantity", "", false); ?>
                 <?php $total += $subtotal ?>
                 <tr>
@@ -45,7 +48,7 @@ $total = 0;
                                 <div class="btn btn-secondary">Edit</div>
                             </a></td>
                     <?php endif; ?>
-                    <?php 
+                    <?php
                     /*
                     Displays product_price from Products table which is the true price
                     If the product_price is different from cart_price (from Cart table),
@@ -65,12 +68,12 @@ $total = 0;
                         <?php endif; ?>
                     </th>
                     <th>
-                        <?php 
+                        <?php
                         /*on each iteration, if not enough in stock for desired quantity, redirect user to cart, 
                         flashing information on what to update and how much quantity is available
                         */
                         ?>
-                        <?php 
+                        <?php
                         if (se($result, "desired_quantity", "", false) > se($result, "stock", "", false)) {
                             flash("Only " . se($result, "stock", "", false) . " " . se($result, "name", "", false) . "(s) in stock, but you wanted " . se($result, "desired_quantity", "", false) . ". Please update your cart.", "warning");
                             redirect($BASE_PATH . "/cart.php");
@@ -78,14 +81,16 @@ $total = 0;
                         ?>
                         <div>Quantity: <?php se($result, "desired_quantity"); ?></div>
                     </th>
-                    <?php //displays calculated subtotal using php tags for each iteration of foreach loop ?>
+                    <?php //displays calculated subtotal using php tags for each iteration of foreach loop 
+                    ?>
                     <th>Subtotal: $<?php echo (se($subtotal)); ?></th>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
     </tbody>
 </table>
-<?php //displays calculated total using php tags after all iterations of foreach loop runs ?>
+<?php //displays calculated total using php tags after all iterations of foreach loop runs 
+?>
 <div id="total-label">Total: $<?php se($total); ?></div>
 <script>
     function validate(form) {
@@ -144,103 +149,106 @@ $total = 0;
     </form>
 </div>
 <?php
-    //if form submitted
-    if (isset($_POST["payment-method"]) && isset($_POST["money-received"]) && isset($_POST["first-name"]) && isset($_POST["last-name"]) && isset($_POST["address"]) && isset($_POST["more-address-info"]) && isset($_POST["city"]) && isset($_POST["state"]) && isset($_POST["country"]) && isset($_POST["zip-code"])) {
-        //caching info to variables
-        $user_id = get_user_id();
-        $method = $_POST["payment-method"];
-        $money = $_POST["money-received"];
-        $first_name = $_POST["first-name"];
-        $last_name = $_POST["last-name"];
-        $address = $_POST["address"];
-        $more_info = $_POST["more-address-info"];
-        $city = $_POST["city"];
-        $state = $_POST["state"];
-        $country = $_POST["country"];
-        $zip_code = $_POST["zip-code"];
-        //form validation
-        $isValid = true;
-        if (empty($method)) {
-            flash("Payment method must not be empty", "warning");
-            $isValid = false;
+//if form submitted
+if (isset($_POST["payment-method"]) && isset($_POST["money-received"]) && isset($_POST["first-name"]) && isset($_POST["last-name"]) && isset($_POST["address"]) && isset($_POST["more-address-info"]) && isset($_POST["city"]) && isset($_POST["state"]) && isset($_POST["country"]) && isset($_POST["zip-code"])) {
+    //caching info to variables
+    $user_id = get_user_id();
+    $method = $_POST["payment-method"];
+    $money = $_POST["money-received"];
+    $first_name = $_POST["first-name"];
+    $last_name = $_POST["last-name"];
+    $address = $_POST["address"];
+    $more_info = $_POST["more-address-info"];
+    $city = $_POST["city"];
+    $state = $_POST["state"];
+    $country = $_POST["country"];
+    $zip_code = $_POST["zip-code"];
+    //form validation
+    $isValid = true;
+    if (empty($method)) {
+        flash("Payment method must not be empty", "warning");
+        $isValid = false;
+    }
+    if (empty($money)) {
+        flash("Money received must not be empty", "warning");
+        $isValid = false;
+    } else if (!is_numeric($money)) {
+        flash("Money received must be a number", "warning");
+        $isValid = false;
+    } else if ($money < $total) {
+        flash("Not enough money received to complete order", "warning");
+        $isValid = false;
+    }
+    if (empty($first_name)) {
+        flash("First name must not be empty", "warning");
+        $isValid = false;
+    }
+    if (empty($last_name)) {
+        flash("Last name must not be empty", "warning");
+        $isValid = false;
+    }
+    if (empty($address)) {
+        flash("Address must not be empty", "warning");
+        $isValid = false;
+    }
+    if (empty($city)) {
+        flash("City must not be empty", "warning");
+        $isValid = false;
+    }
+    if (empty($state)) {
+        flash("State/province must not be empty", "warning");
+        $isValid = false;
+    }
+    if (empty($country)) {
+        flash("Country must not be empty", "warning");
+        $isValid = false;
+    }
+    if (empty($zip_code)) {
+        flash("Zip/postal code must not be empty", "warning");
+        $isValid = false;
+    }
+    if ($isValid) {
+        if (empty($more_info)) {
+            $address .=  ", " . $city . ", " . $state . ", " . $zip_code . " " . $country;
+        } else {
+            $address .=  ", " . $more_info . ", " . $city . ", " . $state . ", " . $zip_code . " " . $country;
         }
-        if (empty($money)) {
-            flash("Money received must not be empty", "warning");
-            $isValid = false;
-        } else if (!is_numeric($money)) {
-            flash("Money received must be a number", "warning");
-            $isValid = false;
-        } else if ($money < $total) {
-            flash("Not enough money received to complete order", "warning");
-            $isValid = false;
-        }
-        if (empty($first_name)) {
-            flash("First name must not be empty", "warning");
-            $isValid = false;
-        }
-        if (empty($last_name)) {
-            flash("Last name must not be empty", "warning");
-            $isValid = false;
-        }
-        if (empty($address)) {
-            flash("Address must not be empty", "warning");
-            $isValid = false;
-        }
-        if (empty($city)) {
-            flash("City must not be empty", "warning");
-            $isValid = false;
-        }
-        if (empty($state)) {
-            flash("State/province must not be empty", "warning");
-            $isValid = false;
-        }
-        if (empty($country)) {
-            flash("Country must not be empty", "warning");
-            $isValid = false;
-        }
-        if (empty($zip_code)) {
-            flash("Zip/postal code must not be empty", "warning");
-            $isValid = false;
-        }
-        if ($isValid) {
-            if (empty($more_info)) {
-                $address .=  ", " . $city . ", " . $state . ", " . $zip_code . " " . $country;
-            } else {
-                $address .=  ", " . $more_info . ", " . $city . ", " . $state . ", " . $zip_code . " " . $country;
+        $db = getDB();
+        $stmt1 = $db->prepare("INSERT INTO Orders(user_id, total_price, address, payment_method, money_received, first_name, last_name) VALUES (:user_id, :total_price, :address, :payment_method, :money_received, :first_name, :last_name)");
+        $params = ["user_id" => $user_id, ":total_price" => $total, ":address" => $address, ":payment_method" => $method, ":money_received" => $money, ":first_name" => $first_name, ":last_name" => $last_name];
+        try {
+            //Entry into orders table
+            $stmt1->execute($params);
+            $order_id = $db->lastInsertId();
+            foreach ($results as $result) {
+                $product_id = se($result, "product_id", "", false);
+                $quantity = se($result, "desired_quantity", "", false);
+                $price = se($result, "product_price", "", false);
+                //Entry into order items table for each item
+                $stmt2 = $db->prepare("INSERT INTO OrderItems(order_id, product_id, quantity, unit_price) VALUES (:order_id, :product_id, :quantity, :unit_price)");
+                $stmt2->execute([":order_id" => $order_id, "product_id" => $product_id, ":quantity" => $quantity, ":unit_price" => $price]);
+                //Deduction of stock from products table
+                $stmt3 = $db->prepare("UPDATE Products SET stock=(stock - :quantity) WHERE id = :product_id");
+                $stmt3->execute([":quantity" => $quantity, ":product_id" => $product_id]);
+                //Clear out user's cart
+                $stmt4 = $db->prepare("DELETE FROM Cart WHERE user_id=:user_id");
+                $stmt4->execute([":user_id" => $user_id]);
             }
-            $db = getDB();
-            $stmt1 = $db->prepare("INSERT INTO Orders(user_id, total_price, address, payment_method, money_received, first_name, last_name) VALUES (:user_id, :total_price, :address, :payment_method, :money_received, :first_name, :last_name)");
-            $params = ["user_id"=>$user_id, ":total_price"=>$total, ":address"=>$address, ":payment_method"=>$method, ":money_received"=>$money, ":first_name"=>$first_name, ":last_name"=>$last_name];
-            try {
-                //Entry into orders table
-                $stmt1->execute($params);
-                $order_id = $db->lastInsertId();
-                foreach ($results as $result) {
-                    $product_id = se($result, "product_id", "", false);
-                    $quantity = se($result, "desired_quantity", "", false);
-                    $price = se($result, "product_price", "", false);
-                    //Entry into order items table for each item
-                    $stmt2 = $db->prepare("INSERT INTO OrderItems(order_id, product_id, quantity, unit_price) VALUES (:order_id, :product_id, :quantity, :unit_price)");
-                    $stmt2->execute([":order_id" => $order_id, "product_id" => $product_id, ":quantity" => $quantity, ":unit_price" => $price]);
-                    //Deduction of stock from products table
-                    $stmt3 = $db->prepare("UPDATE Products SET stock=(stock - :quantity) WHERE id = :product_id");
-                    $stmt3->execute([":quantity" => $quantity, ":product_id" => $product_id]);
-                    //Clear out user's cart
-                    $stmt4 = $db->prepare("DELETE FROM Cart WHERE user_id=:user_id");
-                    $stmt4->execute([":user_id"=>$user_id]);
-                }
-                flash("Successfully placed order", "success");
-                redirect($BASE_PATH . "/confirmation.php");
-            } catch (PDOException $e) {
-                flash("An unknown error occurred with placing your order, please try again later", "warning");
-                error_log(var_export($e->errorInfo, true));
-            }
+            flash("Successfully placed order", "success");
+            $_SESSION["order-id"] = $order_id;
+            redirect($BASE_PATH . "/confirmation.php");
+        } catch (PDOException $e) {
+            flash("An unknown error occurred with placing your order, please try again later", "warning");
+            error_log(var_export($e->errorInfo, true));
         }
     }
-/*
-Clear out the user’s cart after successful order
-Redirect user to Order Confirmation Page
-*/
+}
+?>
+<?php
+/*Creates a hidden form element with the order id assigned to it if it exists
+or an empty string if it doesn't; a script tag submits the form if it isn't
+an empty string to the confirmation page so that it can receive the order id
+for pulling in data about the order for display*/
 ?>
 <?php
 require(__DIR__ . "/../../partials/flash.php");
