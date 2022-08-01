@@ -65,6 +65,7 @@ session_start();
                         <ul class="dropdown-menu bg-secondary" aria-labelledby="productsDropdown">
                             <li><a class=dropdown-item href="<?php echo get_url('add_product.php'); ?>">Add Product</a></li>
                             <li><a class=dropdown-item href="<?php echo get_url('see_products.php'); ?>">See Products</a></li>
+                            <li><a class=dropdown-item href="<?php echo get_url('see_purchase_history.php'); ?>">See Purchase History</a></li>
                         </ul>
                     <?php endif; ?>
                     <?php if (is_logged_in()) : ?>
