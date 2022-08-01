@@ -1,16 +1,15 @@
 <?php
-require_once(__DIR__ . "/../../partials/nav.php");
-//If user isn't logged in, they cannot access checkout page features
+require(__DIR__ . "/../../partials/nav.php");
+//If user isn't logged in, they cannot access order details page
 if (!is_logged_in(false)) {
-    flash("Please log in to or register account to place orders", "warning");
+    flash("Please log in to or register account to checkout cart items", "warning");
     die(header("Location: $BASE_PATH" . "/login.php"));
 }
 $shipping_info = [];
 $results = [];
 //Selects order details from Orders table and OrderItems table
-if (isset($_SESSION["order-id"])) {
-    $order_id = $_SESSION["order-id"];
-    unset($_SESSION["order-id"]);
+if (isset($_POST["order-id"])) {
+    $order_id = $_POST["order-id"];
     $db = getDB();
     $stmt1 = $db->prepare("SELECT oi.quantity, oi.unit_price, p.name FROM OrderItems as oi LEFT JOIN Products as p ON oi.product_id = p.id WHERE oi.order_id = :order_id");
     $stmt2 = $db->prepare("SELECT payment_method, money_received, total_price, address, first_name, last_name FROM Orders WHERE id = :order_id");
@@ -54,12 +53,11 @@ if (isset($_SESSION["order-id"])) {
 <?php if (!empty($shipping_info)) : ?>
     <div id="total-label">Total: $<?php se($shipping_info, "total_price"); ?></div>
     <div class="left-margin">
-        <h2>Thank you for your order, <?php se($shipping_info, "first_name"); ?> <?php se($shipping_info, "last_name"); ?>. Enjoy &#128540;</h2>
         <h4>Details</h4>
         <p>Payment: $<?php se($shipping_info, "money_received"); ?> via <?php se($shipping_info, "payment_method"); ?></p>
         <p>Location: <?php se($shipping_info, "address"); ?></p>
     </div>
 <?php endif; ?>
 <?php
-require(__DIR__ . "/../../partials/flash.php");
+require_once(__DIR__ . "/../../partials/flash.php");
 ?>
