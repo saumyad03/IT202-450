@@ -38,8 +38,8 @@ session_start();
         <div class="collapse navbar-collapse" id="navContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <?php if (is_logged_in()) : ?>
-
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('purchase_history.php'); ?>">Purchase History</a></li>
                 <?php endif; ?>
                 <?php if (!is_logged_in()) : ?>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('login.php'); ?>">Login</a></li>
@@ -65,6 +65,7 @@ session_start();
                         <ul class="dropdown-menu bg-secondary" aria-labelledby="productsDropdown">
                             <li><a class=dropdown-item href="<?php echo get_url('add_product.php'); ?>">Add Product</a></li>
                             <li><a class=dropdown-item href="<?php echo get_url('see_products.php'); ?>">See Products</a></li>
+                            <li><a class=dropdown-item href="<?php echo get_url('see_purchase_history.php'); ?>">See Purchase History</a></li>
                         </ul>
                     <?php endif; ?>
                     <?php if (is_logged_in()) : ?>
