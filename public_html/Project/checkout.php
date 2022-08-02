@@ -62,9 +62,9 @@ $total = 0;
                         <?php if (se($result, "product_price", "", false) != se($result, "cart_price", "", false)) : ?>
                             <?php $diff = (se($result, "product_price", "", false) - se($result, "cart_price", "", false)) / se($result, "cart_price", "", false) * 100; ?>
                             <?php if ($diff > 0) : ?>
-                                (<?php echo $diff ?>% increase in price)
+                                (<?php echo round($diff, 2) ?>% increase in price)
                             <?php else : ?>
-                                (<?php echo abs($diff) ?>% decrease in price)
+                                (<?php echo round(abs($diff), 2) ?>% decrease in price)
                             <?php endif; ?>
                         <?php endif; ?>
                     </th>
