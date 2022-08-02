@@ -55,6 +55,7 @@ if (isset($_POST["order-id"])) {
     <div id="total-label">Total: $<?php echo se($shipping_info, "total_price", "", false) / 100; ?></div>
     <div class="left-margin">
         <h4>Details</h4>
+        <p>Name: <?php se($shipping_info, "first_name"); ?> <?php se($shipping_info, "last_name"); ?></p>
         <p>Payment: $<?php echo se($shipping_info, "money_received", "", false) / 100; ?> via <?php se($shipping_info, "payment_method"); ?></p>
         <p>Location: <?php se($shipping_info, "address"); ?></p>
     </div>
