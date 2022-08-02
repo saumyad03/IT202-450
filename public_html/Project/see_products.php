@@ -7,11 +7,6 @@ if (!has_role("Admin") && !has_role("Shop Owner")) {
 ?>
 <h1 class="left-margin">All Products</h1>
 <?php
-
-if (is_logged_in(false)) {
-    //comment this out if you don't want to see the session variables
-    error_log("Session data: " . var_export($_SESSION, true));
-}
 //default variables needed for conditional html below
 $category = 'all';
 $search = '';
@@ -105,7 +100,7 @@ try {
                         <?php else : ?>
                             <p>Visible</p>
                         <?php endif; ?>
-                        <p class="card-text">$<?php se($result, "unit_price"); ?></p>
+                        <p class="card-text">$<?php echo se($result, "unit_price", "", false) / 100; ?></p>
                         <a href="edit_product.php?name=<?php se($result, "name"); ?>">
                             <div class="btn btn-secondary">Edit</div>
                         </a>

@@ -24,6 +24,7 @@ if (isset($_POST["order-id"])) {
     }
 }
 ?>
+<h1 class="left-margin">Order Details</h1>
 <table class="table table-striped">
     <thead>
     </thead>
@@ -41,20 +42,20 @@ if (isset($_POST["order-id"])) {
                                 <div class="btn btn-secondary">Edit</div>
                             </a></td>
                     <?php endif; ?>
-                    <td>$<?php se($result, "unit_price"); ?></td>
+                    <td>$<?php echo se($result, "unit_price", "", false) / 100; ?></td>
                     <td>Quantity: <?php se($result, "quantity"); ?></td>
                     <?php $subtotal = se($result, "unit_price", "", false) * se($result, "quantity", "", false); ?>
-                    <td>Subtotal: $<?php echo (se($subtotal)); ?></td>
+                    <td>Subtotal: $<?php echo (se($subtotal, null, "", false) / 100); ?></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
     </tbody>
 </table>
 <?php if (!empty($shipping_info)) : ?>
-    <div id="total-label">Total: $<?php se($shipping_info, "total_price"); ?></div>
+    <div id="total-label">Total: $<?php echo se($shipping_info, "total_price", "", false) / 100; ?></div>
     <div class="left-margin">
         <h4>Details</h4>
-        <p>Payment: $<?php se($shipping_info, "money_received"); ?> via <?php se($shipping_info, "payment_method"); ?></p>
+        <p>Payment: $<?php echo se($shipping_info, "money_received", "", false) / 100; ?> via <?php se($shipping_info, "payment_method"); ?></p>
         <p>Location: <?php se($shipping_info, "address"); ?></p>
     </div>
 <?php endif; ?>

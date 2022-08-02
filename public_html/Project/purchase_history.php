@@ -18,6 +18,7 @@ try {
     error_log(var_export($e->errorInfo, true));
 }
 ?>
+<h1 class="left-padding">My Purchase History</h1>
 <table class="table table-striped">
     <thead>
         <th>Order Name</th>
@@ -34,8 +35,8 @@ try {
             <?php foreach($results as $result) : ?>
                 <tr>
                     <td><?php se($result, "first_name"); ?> <?php se($result, "last_name"); ?></td>
-                    <td><?php se($result, "money_received"); ?> via <?php se($result, "payment_method") ?></td>
-                    <td><?php se($result, "total_price") ?></td>
+                    <td>$<?php echo se($result, "money_received", "", false) / 100; ?> via <?php se($result, "payment_method") ?></td>
+                    <td>$<?php echo se($result, "total_price", "", false) / 100; ?></td>
                     <td>
                         <form method="post" action="order_details.php">
                             <input type="hidden" name="order-id" value=<?php se($result, "id"); ?>>

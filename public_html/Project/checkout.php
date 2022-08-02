@@ -8,6 +8,7 @@ if (!is_logged_in(false)) {
 //Default value for order id (doesn't submit form)
 $order_id = "";
 ?>
+<h1 class="left-margin">Checkout Order</h1>
 <?php
 $db = getDB();
 $user_id = get_user_id();
@@ -57,7 +58,7 @@ $total = 0;
                     Done using conditional HTML and php tags
                     */
                     ?>
-                    <th>$<?php se($result, "product_price"); ?>
+                    <th>$<?php echo se($result, "product_price", "", false) / 100; ?>
                         <?php if (se($result, "product_price", "", false) != se($result, "cart_price", "", false)) : ?>
                             <?php $diff = (se($result, "product_price", "", false) - se($result, "cart_price", "", false)) / se($result, "cart_price", "", false) * 100; ?>
                             <?php if ($diff > 0) : ?>
@@ -83,7 +84,7 @@ $total = 0;
                     </th>
                     <?php //displays calculated subtotal using php tags for each iteration of foreach loop 
                     ?>
-                    <th>Subtotal: $<?php echo (se($subtotal)); ?></th>
+                    <th>Subtotal: $<?php echo (se($subtotal, null, "", false) / 100); ?></th>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -91,7 +92,7 @@ $total = 0;
 </table>
 <?php //displays calculated total using php tags after all iterations of foreach loop runs 
 ?>
-<div id="total-label">Total: $<?php se($total); ?></div>
+<div id="total-label">Total: $<?php echo se($total, null, "", false)/100; ?></div>
 <script>
     function validate(form) {
         let method = form["payment-method"].value;
@@ -160,7 +161,7 @@ $total = 0;
             </div>
             <div class="mb-3 col-lg-3">
                 <label class="form-label" for="money-received">Money Received</label>
-                <input class="form-control" id="money-received" name="money-received" required type="number" min="<?php se($total); ?>" step="0.01"/>
+                <input class="form-control" id="money-received" name="money-received" required type="number" min="<?php echo se($total, null, "", false)/100; ?>" step="0.01"/>
             </div>
         </div>
         <h3>Shipping Information</h3>
@@ -207,7 +208,7 @@ if (isset($_POST["payment-method"]) && isset($_POST["money-received"]) && isset(
     //caching info to variables
     $user_id = get_user_id();
     $method = $_POST["payment-method"];
-    $money = $_POST["money-received"];
+    $money = $_POST["money-received"] * 100;
     $first_name = $_POST["first-name"];
     $last_name = $_POST["last-name"];
     $address = $_POST["address"];
