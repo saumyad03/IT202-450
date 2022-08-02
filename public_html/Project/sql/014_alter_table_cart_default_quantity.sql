@@ -1,0 +1,1 @@
+ALTER TABLE `Cart` ALTER `desired_quantity` SET DEFAULT 1;

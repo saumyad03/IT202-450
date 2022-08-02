@@ -1,0 +1,2 @@
+ALTER TABLE `Orders` MODIFY COLUMN `money_received` INT;
+ALTER TABLE `Orders` ALTER COLUMN `money_received` ADD CONSTRAINT NOT NULL;
