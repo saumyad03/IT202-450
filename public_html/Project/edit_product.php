@@ -44,6 +44,7 @@ if (isset($_GET["name"]) && isset($_POST["name"]) && isset($_POST["description"]
     }
     if ($isValid) {
         $db = getDB();
+        $price *= 100; //converts from decimal to int before updating price
         $stmt = $db->prepare("UPDATE Products SET name=:newName, description=:description, category=:category, stock=:stock, unit_price=:unit_price, visibility=:visibility WHERE name=:oldName");
         $params = [":newName" => $newName, ":description" => $description, ":category" => $category, ":stock" => $stock, ":unit_price" => $price, ":visibility" => $visibility, ":oldName" => $oldName];
         try {
@@ -120,7 +121,7 @@ try {
         </div>
         <div class="mb-3">
             <label class="form-label" for="p">Unit Price (in dollars)</label>
-            <input class="form-control" name="price" value="<?php se($result, "unit_price"); ?>" id="p" type="number" step="0.01" min="0.01" max="5000.00" required></input>
+            <input class="form-control" name="price" value="<?php echo se($result, "unit_price", "", false) / 100; ?>" id="p" type="number" step="0.01" min="0.01" max="5000.00" required></input>
         </div>
         <div class="mb-3 form-check">
             <label class="form-check-label" for="v">Visibible</label>

@@ -23,7 +23,7 @@ else {
 ?>
 <ul>
     <div class="display-3"><?php se($name) ?></div>
-    <div class="display-6">$<?php se($results, "unit_price") ?></div>
+    <div class="display-6">$<?php echo se($results, "unit_price", "", false) / 100; ?></div>
     <p><?php se($results, "description") ?><br><span class="bold-text">Stock:</span> <?php se($results, "stock") ?><br><span class="bold-text">Category:</span> <?php se($results, "category") ?></p>
     <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
         <a href="edit_product.php?name=<?php se($name); ?>">

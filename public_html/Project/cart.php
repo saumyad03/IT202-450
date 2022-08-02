@@ -82,7 +82,14 @@ if (isset($_POST["name"])) {
                 flash("Successfully added $name to cart", "success");
             } catch (PDOException $e) {
                 if ($e->errorInfo[1] === 1062) {
-                    flash("This product is already in your cart.", "info");
+                    $stmt3 = $db->prepare("UPDATE Cart SET desired_quantity=desired_quantity+1 WHERE product_id=:prod_id");
+                    try {
+                        $stmt3->execute([":prod_id" => $product_id]);
+                        flash("Since this product was already in your cart, increased quantity by 1", "success");
+                    } catch(PDOException $e) {
+                        flash("An unknown error occurred trying to add this item your cart", "warning");
+                        error_log(var_export($e->errorInfo, true));
+                    }
                 } else {
                     flash("An unknown error occurred, please try again", "warning");
                     error_log(var_export($e->errorInfo, true));
@@ -142,7 +149,7 @@ $total = 0;
                                 <div class="btn btn-secondary">Edit</div>
                             </a></td>
                     <?php endif; ?>
-                    <th>$<?php se($result, "unit_price"); ?></th>
+                    <th>$<?php echo se($result, "unit_price", "", false) / 100; ?></th>
                     <th>
                         <form method="post" onsubmit="return validate(this)">
                             <input class="" name="quantity" type="number" min="0" value="<?php se($result, "desired_quantity"); ?>" max="<?php se($result, "stock"); ?>">
@@ -156,13 +163,13 @@ $total = 0;
                             <input class="btn btn-danger" type="Submit" value="Remove">
                         </form>
                     </th>
-                    <th>Subtotal: $<?php echo (se($subtotal)); ?></th>
+                    <th>Subtotal: $<?php echo (se($subtotal, null, "", false) / 100); ?></th>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
     </tbody>
 </table>
-<div id="total-label">Total: $<?php se($total); ?></div>
+<div id="total-label">Total: $<?php echo se($total, null, "", false) / 100; ?></div>
 <form class="cart-footer" method="post">
     <input type="hidden" name="remove-all" value="true">
     <input id="cart-remove-all" class="btn btn-danger" type="Submit" value="Delete All Cart Items">

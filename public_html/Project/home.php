@@ -13,7 +13,7 @@ $search = '';
 $sort = 'none';
 $results = [];
 $db = getDB();
-$query = "SELECT name, unit_price FROM Products WHERE visibility=1";
+$query = "SELECT name, unit_price FROM Products WHERE visibility=1 AND stock>0";
 $params = [];
 if (isset($_POST["search"])) {
     $search = $_POST["search"];
@@ -90,7 +90,7 @@ try {
                         <a class="text-dark text-decoration-none" href="more_details.php?name=<?php se($result, "name"); ?>">
                             <h5 class="card-title"><?php se($result, "name"); ?></h5>
                         </a>
-                        <p class="card-text">$<?php se($result, "unit_price"); ?></p>
+                        <p class="card-text">$<?php echo se($result, "unit_price", "", false) / 100; ?></p>
                         <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
                             <a href="edit_product.php?name=<?php se($result, "name"); ?>">
                                 <div class="btn btn-secondary">Edit</div>

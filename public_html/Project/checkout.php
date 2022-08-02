@@ -8,6 +8,7 @@ if (!is_logged_in(false)) {
 //Default value for order id (doesn't submit form)
 $order_id = "";
 ?>
+<h1 class="left-margin">Checkout Order</h1>
 <?php
 $db = getDB();
 $user_id = get_user_id();
@@ -57,7 +58,7 @@ $total = 0;
                     Done using conditional HTML and php tags
                     */
                     ?>
-                    <th>$<?php se($result, "product_price"); ?>
+                    <th>$<?php echo se($result, "product_price", "", false) / 100; ?>
                         <?php if (se($result, "product_price", "", false) != se($result, "cart_price", "", false)) : ?>
                             <?php $diff = (se($result, "product_price", "", false) - se($result, "cart_price", "", false)) / se($result, "cart_price", "", false) * 100; ?>
                             <?php if ($diff > 0) : ?>
@@ -83,7 +84,7 @@ $total = 0;
                     </th>
                     <?php //displays calculated subtotal using php tags for each iteration of foreach loop 
                     ?>
-                    <th>Subtotal: $<?php echo (se($subtotal)); ?></th>
+                    <th>Subtotal: $<?php echo (se($subtotal, null, "", false) / 100); ?></th>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -91,10 +92,63 @@ $total = 0;
 </table>
 <?php //displays calculated total using php tags after all iterations of foreach loop runs 
 ?>
-<div id="total-label">Total: $<?php se($total); ?></div>
+<div id="total-label">Total: $<?php echo se($total, null, "", false)/100; ?></div>
 <script>
     function validate(form) {
-        return true;
+        let method = form["payment-method"].value;
+        let money = form["money-received"].value;
+        let first_name = form["first-name"].value;
+        let last_name = form["last-name"].value;
+        let address = form.address.value;
+        let city = form.city.value;
+        let state = form.state .value;
+        let country = form.country.value;
+        let zip_code = form["zip-code"].value;
+        let total = document.getElementById("total-label").textContent.split("$")[1];
+        let isValid = true;
+        if (method.length === 0) {
+            flash("Payment method must not be empty", "warning");
+            isValid = false;
+        }
+        if (money.length === 0) {
+            flash("Money received must not be empty", "warning");
+            isValid = false;
+        } else if(isNaN(money)) {
+            flash("Money received must be a number", "warning");
+            isValid = false;
+        } else if (money < total) {
+            flash("Not enough money received to complete order", "warning");
+            isValid = false;
+        }
+        if (first_name.length === 0) {
+            flash("First name must not be empty", "warning");
+            isValid = false;
+        }
+        if (last_name.length === 0) {
+            flash("Last name must not be empty", "warning");
+            isValid = false;
+        }
+        if (address.length === 0) {
+            flash("Address must not be empty", "warning");
+            isValid = false;
+        }
+        if (city.length === 0) {
+            flash("City must not be empty", "warning");
+            isValid = false;
+        }
+        if (state.length === 0) {
+            flash("State/province must not be empty", "warning");
+            isValid = false;
+        }
+        if (country.length === 0) {
+            flash("Country must not be empty", "warning");
+            isValid = false;
+        }
+        if (zip_code.length === 0) {
+            flash("Zip/postal code must not be empty", "warning");
+            isValid = false;
+        }
+        return isValid;
     }
 </script>
 <div class="container-fluid">
@@ -103,27 +157,27 @@ $total = 0;
         <div class="form-group row">
             <div class="mb-3 col-lg-3">
                 <label class="form-label" for="payment-method">Payment Method</label>
-                <input class="form-control" id="payment-method" name="payment-method" />
+                <input class="form-control" id="payment-method" name="payment-method" required/>
             </div>
             <div class="mb-3 col-lg-3">
                 <label class="form-label" for="money-received">Money Received</label>
-                <input class="form-control" id="money-received" name="money-received" />
+                <input class="form-control" id="money-received" name="money-received" required type="number" min="<?php echo se($total, null, "", false)/100; ?>" step="0.01"/>
             </div>
         </div>
         <h3>Shipping Information</h3>
         <div class="form-group row">
             <div class="mb-3 col-lg-2">
                 <label class="form-label" for="first-name">First Name</label>
-                <input class="form-control" id="first-name" name="first-name" />
+                <input class="form-control" id="first-name" name="first-name" required />
             </div>
             <div class="mb-3 col-lg-2">
                 <label class="form-label" for="last-name">Last Name</label>
-                <input class="form-control" id="last-name" name="last-name" />
+                <input class="form-control" id="last-name" name="last-name" required />
             </div>
         </div>
         <div class="mb-3 col-lg-4">
             <label class="form-label" for="address">Address</label>
-            <input class="form-control" id="address" name="address" />
+            <input class="form-control" id="address" name="address" required/>
         </div>
         <div class="mb-3 col-lg-4">
             <label class="form-label" for="more-address-info">Apartment, suite, etc.</label>
@@ -131,19 +185,19 @@ $total = 0;
         </div>
         <div class="mb-3 col-lg-4">
             <label class="form-label" for="city">City</label>
-            <input class="form-control" id="city" name="city" />
+            <input class="form-control" id="city" name="city" required />
         </div>
         <div class="mb-3 col-lg-4">
             <label class="form-label" for="state">State/province</label>
-            <input class="form-control" id="state" name="state" />
+            <input class="form-control" id="state" name="state" required />
         </div>
         <div class="mb-3 col-lg-4">
             <label class="form-label" for="country">Country</label>
-            <input class="form-control" id="country" name="country" />
+            <input class="form-control" id="country" name="country" required />
         </div>
         <div class="mb-3 col-lg-4">
             <label class="form-label" for="zip-code">ZIP/postal code</label>
-            <input class="form-control" id="zip-code" name="zip-code" />
+            <input class="form-control" id="zip-code" name="zip-code" required />
         </div>
         <input type="submit" class="btn btn-success" value="Checkout Cart" />
     </form>
@@ -154,7 +208,7 @@ if (isset($_POST["payment-method"]) && isset($_POST["money-received"]) && isset(
     //caching info to variables
     $user_id = get_user_id();
     $method = $_POST["payment-method"];
-    $money = $_POST["money-received"];
+    $money = $_POST["money-received"] * 100;
     $first_name = $_POST["first-name"];
     $last_name = $_POST["last-name"];
     $address = $_POST["address"];
