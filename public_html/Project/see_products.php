@@ -16,15 +16,15 @@ $db = getDB();
 $query = "SELECT name, unit_price, visibility FROM Products";
 $params = [];
 //sd96 - 7/17/22
-if (isset($_POST["search"])) {
-    $search = $_POST["search"];
+if (isset($_GET["search"])) {
+    $search = $_GET["search"];
     if ($search != '') {
         $query .= " WHERE name LIKE :search";
         $params[":search"] = "%$search%";
     }
 }
-if (isset($_POST["category"])) {
-    $category = $_POST["category"];
+if (isset($_GET["category"])) {
+    $category = $_GET["category"];
     if ($category != "all") {
         if (!strpos($query, "WHERE")) {
             $query .= " WHERE category=:category";
@@ -34,8 +34,8 @@ if (isset($_POST["category"])) {
         $params[":category"] = $category;
     }
 }
-if (isset($_POST["sort"])) {
-    $sort = $_POST["sort"];
+if (isset($_GET["sort"])) {
+    $sort = $_GET["sort"];
     if (!($sort == "none")) {
         if ($sort == "low-high") {
             $query .= " ORDER BY unit_price ASC";
@@ -59,7 +59,7 @@ try {
     error_log(var_export($e->errorInfo, true));
 }
 ?>
-<form class="row offset-lg-2" method="post" onsubmit="return validate(this)">
+<form class="row offset-lg-2" method="GET" onsubmit="return validate(this)">
     <div class="col-auto">
         <label class="form-label" for="search">Search</label>
         <input class="form-control" name="search" id="search" placeholder="Search" value="<?php se($search); ?>">
