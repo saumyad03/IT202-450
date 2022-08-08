@@ -84,9 +84,17 @@ else {
             $rating_total += $rating["rating"];
         }
         $average_rating = round($rating_total/$rating_count, 1);
+        $stmt6 = $db->prepare("UPDATE Products SET average_rating=:average_rating WHERE id=:product_id");
+        try {
+            $stmt6->execute([":average_rating"=>$average_rating, ":product_id"=>$product_id]);
+        } catch(PDOException $e) {
+            flash("Something went wrong trying to load this get the product's average rating", "warning");
+            error_log(var_export($e->errorInfo, true));
+        }
         $rating_pages = ceil($rating_count/$per_page);
     } catch(PDOException $e) {
-
+        flash("Something went wrong trying to load this paginate reviews", "warning");
+        error_log(var_export($e->errorInfo, true));
     }       
     //gets ratings from database
     $ratings = [];
