@@ -1,0 +1,1 @@
+ALTER TABLE Products ADD average_rating FLOAT DEFAULT 5.0;

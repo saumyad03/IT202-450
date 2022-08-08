@@ -7,35 +7,60 @@ if (!has_role("Admin") && !has_role("Shop Owner")) {
 ?>
 <h1 class="left-margin">All Products</h1>
 <?php
+//pagination variables
+$offset = 0;
+$page = 1;
+$per_page = 10;
+if (isset($_GET["page"])) {
+    $page = $_GET["page"];
+    if ($page >= 1) {
+        $offset = ($page - 1) * $per_page;
+    }
+}
+$total_query = "SELECT COUNT(1) as total FROM Products name WHERE 1=1";
+$total_params = [];
 //default variables needed for conditional html below
 $category = 'all';
 $search = '';
 $sort = 'none';
+$stock = 'all';
 $results = [];
 $db = getDB();
-$query = "SELECT name, unit_price, visibility FROM Products";
+$query = "SELECT name, unit_price, visibility FROM Products WHERE 1=1";
 $params = [];
 //sd96 - 7/17/22
-if (isset($_POST["search"])) {
-    $search = $_POST["search"];
+if (isset($_GET["search"])) {
+    $search = $_GET["search"];
     if ($search != '') {
-        $query .= " WHERE name LIKE :search";
+        $query .= " AND name LIKE :search";
+        $total_query .= " AND NAME LIKE :search";
         $params[":search"] = "%$search%";
+        $total_params[":search"] = "%$search%";
     }
 }
-if (isset($_POST["category"])) {
-    $category = $_POST["category"];
+if (isset($_GET["category"])) {
+    $category = $_GET["category"];
     if ($category != "all") {
-        if (!strpos($query, "WHERE")) {
-            $query .= " WHERE category=:category";
-        } else {
-            $query .= " AND category=:category";
-        }
+        $query .= " AND category=:category";
+        $total_query .= " AND category=:category";
         $params[":category"] = $category;
+        $total_params[":category"] = $category;
     }
 }
-if (isset($_POST["sort"])) {
-    $sort = $_POST["sort"];
+if (isset($_GET["stock"])) {
+    $stock = $_GET["stock"];
+    if ($stock != "all") {
+        if ($stock == "in") {
+            $query .= " AND stock >= 1";
+            $total_query .= " AND stock >= 1";
+        } else {
+            $query .= " AND stock < 1";
+            $total_query .= " AND stock < 1";
+        }
+    }
+}
+if (isset($_GET["sort"])) {
+    $sort = $_GET["sort"];
     if (!($sort == "none")) {
         if ($sort == "low-high") {
             $query .= " ORDER BY unit_price ASC";
@@ -49,8 +74,25 @@ if (!strpos($query, "ORDER BY")) {
 } else {
     $query .= " , modified DESC";
 }
-$query .= " LIMIT 10";
+$stmt = $db->prepare($total_query);
+try {
+    $stmt->execute($total_params);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $total = se($result, "total", "", false);
+    $page_count = ceil($total/$per_page);
+} catch (PDOException $e) {
+    flash("An unknown error occurred with showing multiple pages for products", "warning");
+    error_log(var_export($e->errorInfo, true));
+}
+$query .= " LIMIT :offset, :per_page";
+$params[":offset"] = $offset;
+$params[":per_page"] = $per_page;
 $stmt = $db->prepare($query);
+foreach ($params as $key => $value) {
+    $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+    $stmt->bindValue($key, $value, $type);
+}
+$params = null;
 try {
     $stmt->execute($params);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -59,7 +101,7 @@ try {
     error_log(var_export($e->errorInfo, true));
 }
 ?>
-<form class="row offset-lg-2" method="post" onsubmit="return validate(this)">
+<form class="row offset-lg-2" method="GET" onsubmit="return validate(this)">
     <div class="col-auto">
         <label class="form-label" for="search">Search</label>
         <input class="form-control" name="search" id="search" placeholder="Search" value="<?php se($search); ?>">
@@ -82,11 +124,19 @@ try {
         </select>
     </div>
     <div class="col-auto">
+        <label class="form-label" for="stock">Stock</label>
+        <select class="form-select" aria-label="Stock" name="stock" id="stock">
+            <option value="all" <?php if (se($stock, null, "", false) == "all") : ?>selected<?php endif; ?>>All</option>
+            <option value="out" <?php if (se($stock, null, "", false) == "out") : ?>selected<?php endif; ?>>Out of Stock</option>
+            <option value="in" <?php if (se($stock, null, "", false) == "in") : ?>selected<?php endif; ?>>In Stock</option>
+        </select>
+    </div>
+    <div class="col-auto">
         <div class="form-label invisible">Blank Text</div>
         <input class="form-control btn btn-primary" type="submit" value="Search">
     </div>
 </form>
-<div class="container-fluid">
+<div class="container-fluid mb-3">
     <div class="row row-cols-sm-2 row-cols-xs-1 row-cols-md-3 row-cols-lg-6 g-4">
         <?php foreach ($results as $result) : ?>
             <div class="col">
@@ -116,6 +166,19 @@ try {
         <?php endforeach; ?>
     </div>
 </div>
+<nav aria-label="Item Page">
+    <ul class="pagination justify-content-center">
+        <li class="page-item <?php if ($page == 1): ?>disabled<?php endif; ?>">
+            <a class="page-link" href="?search=<?php se($search); ?>&category=<?php se($category); ?>&sort=<?php se($sort); ?>&stock=<?php se($stock); ?>&page=<?php se($page - 1); ?>">Previous</a>
+        </li>
+        <?php for ($i = 0; $i < $page_count; $i++) : ?>
+            <li class="page-item <?php if($i == $page - 1): ?>active<?php endif; ?>"><a class="page-link" href="?search=<?php se($search); ?>&category=<?php se($category); ?>&sort=<?php se($sort); ?>&sort=<?php se($sort); ?>&page=<?php se($i+1); ?>"><?php echo ($i + 1); ?></a></li>
+        <?php endfor; ?>
+        <li class="page-item <?php if($page == $page_count): ?>disabled<?php endif; ?>">
+            <a class="page-link" href="?search=<?php se($search); ?>&page=<?php echo (se($page, null, "", false) + 1) ?>">Next</a>
+        </li>
+    </ul>
+</nav>
 <?php
 require(__DIR__ . "/../../partials/flash.php");
 ?>
