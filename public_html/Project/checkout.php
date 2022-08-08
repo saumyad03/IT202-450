@@ -120,7 +120,7 @@ $total = 0;
         } else if (isNaN(money)) {
             flash("Money received must be a number", "warning");
             isValid = false;
-        } else if (money < total) {
+        } else if (parseFloat(money) < parseFloat(total)) {
             flash("Not enough money received to complete order", "warning");
             isValid = false;
         }
