@@ -83,7 +83,7 @@ else {
             $rating_count += 1;
             $rating_total += $rating["rating"];
         }
-        if (se($ratings_count, null, "0", false) >= 1) {
+        if (se($rating_count, null, "0", false) >= 1) {
             $average_rating = round($rating_total/$rating_count, 1);
         } else {
             $average_rating = 5;
