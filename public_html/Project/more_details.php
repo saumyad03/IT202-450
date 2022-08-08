@@ -71,7 +71,7 @@ else {
         }
     }
     //gets all ratings and calculates average rating
-            //change this to fetch all ratings
+    //sd96 - 8/8/22
     $allRatings = [];
     $stmt5 = $db ->prepare("SELECT rating FROM Ratings WHERE product_id = :product_id");
     try {
