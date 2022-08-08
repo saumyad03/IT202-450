@@ -185,7 +185,7 @@ try {
             <li class="page-item <?php if($i == $page - 1): ?>active<?php endif; ?>"><a class="page-link" href="?search=<?php se($search); ?>&category=<?php se($category); ?>&sort=<?php se($sort); ?>&page=<?php se($i+1); ?>"><?php echo ($i + 1); ?></a></li>
         <?php endfor; ?>
         <li class="page-item <?php if($page == $page_count): ?>disabled<?php endif; ?>">
-            <a class="page-link" href="?search=<?php se($search); ?>&page=<?php echo (se($page, null, "", false) + 1) ?>">Next</a>
+            <a class="page-link" href="?search=<?php se($search); ?>&category=<?php se($category); ?>&sort=<?php se($sort); ?>&page=<?php echo (se($page, null, "", false) + 1) ?>">Next</a>
         </li>
     </ul>
 </nav>
