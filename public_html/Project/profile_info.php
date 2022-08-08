@@ -1,12 +1,11 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 
-if (!has_role("Admin") && !has_role("Shop Owner")) {
-    flash("You don't have permission to view this page", "warning");
-    die(header("Location: $BASE_PATH" . "/home.php"));
-}
 if (isset($_GET["username"])) {
     $username = $_GET["username"];
+    if (get_username() == $username) {
+        redirect($BASE_PATH . "/profile.php");
+    }
     $db = getDB();
     //gets email and privacy settings
     $stmt = $db->prepare("SELECT id, email, username, public FROM Users WHERE username=:username");
