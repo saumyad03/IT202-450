@@ -83,7 +83,9 @@ else {
             $rating_count += 1;
             $rating_total += $rating["rating"];
         }
-        $average_rating = round($rating_total/$rating_count, 1);
+        if ($ratings_count >= 1) {
+            $average_rating = round($rating_total/$rating_count, 1);
+        }
         $stmt6 = $db->prepare("UPDATE Products SET average_rating=:average_rating WHERE id=:product_id");
         try {
             $stmt6->execute([":average_rating"=>$average_rating, ":product_id"=>$product_id]);
