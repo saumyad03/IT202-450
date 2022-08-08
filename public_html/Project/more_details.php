@@ -83,8 +83,10 @@ else {
             $rating_count += 1;
             $rating_total += $rating["rating"];
         }
-        if ($ratings_count >= 1) {
+        if (se($ratings_count, null, "0", false) >= 1) {
             $average_rating = round($rating_total/$rating_count, 1);
+        } else {
+            $average_rating = 5;
         }
         $stmt6 = $db->prepare("UPDATE Products SET average_rating=:average_rating WHERE id=:product_id");
         try {
@@ -130,7 +132,7 @@ else {
 <ul>
     <div class="display-3"><?php se($name) ?></div>
     <div class="display-6">$<?php echo se($results, "unit_price", "", false) / 100; ?></div>
-    <p><?php se($results, "description") ?><br><span class="bold-text">Stock:</span> <?php se($results, "stock") ?><br><span class="bold-text">Category:</span> <?php se($results, "category") ?><br><span class="bold-text">Average Rating:</span> <?php se($average_rating) ?></p>
+    <p><?php se($results, "description") ?><br><span class="bold-text">Stock:</span> <?php se($results, "stock") ?><br><span class="bold-text">Category:</span> <?php se($results, "category") ?><br><span class="bold-text">Average Rating:</span> <?php se($average_rating, null, "5", true) ?></p>
     <?php if (has_role("Admin") || has_role("Shop Owner")) : ?>
         <a href="edit_product.php?name=<?php se($name); ?>">
             <div class="btn btn-secondary">Edit</div>
