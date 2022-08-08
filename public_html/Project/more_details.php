@@ -177,7 +177,7 @@ else {
     </tbody>
 </table>
 </ul>
-=<nav aria-label="Review Page">
+<nav aria-label="Review Page">
     <ul class="pagination justify-content-center">
         <li class="page-item <?php if ($page == 1): ?>disabled<?php endif; ?>">
             <a class="page-link" href="?name=<?php se($name); ?>&page=<?php se($page - 1); ?>">Previous</a>

@@ -116,6 +116,19 @@ try {
         <?php endforeach; ?>
     </div>
 </div>
+<nav aria-label="Item Page">
+    <ul class="pagination justify-content-center">
+        <li class="page-item <?php if ($page == 1): ?>disabled<?php endif; ?>">
+            <a class="page-link" href="?search=<?php se($search); ?>&category=<?php se($category); ?>&sort=<?php se($sort); ?>&page=<?php se($page - 1); ?>">Previous</a>
+        </li>
+        <?php for ($i = 0; $i < $page_count; $i++) : ?>
+            <li class="page-item <?php if($i == $page - 1): ?>active<?php endif; ?>"><a class="page-link" href="?search=<?php se($search); ?>&category=<?php se($category); ?>&sort=<?php se($sort); ?>&page=<?php se($i+1); ?>"><?php echo ($i + 1); ?></a></li>
+        <?php endfor; ?>
+        <li class="page-item <?php if($page == $page_count): ?>disabled<?php endif; ?>">
+            <a class="page-link" href="?search=<?php se($search); ?>&page=<?php echo (se($page, null, "", false) + 1) ?>">Next</a>
+        </li>
+    </ul>
+</nav>
 <?php
 require(__DIR__ . "/../../partials/flash.php");
 ?>
