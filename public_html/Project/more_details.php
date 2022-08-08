@@ -35,7 +35,12 @@ else {
     try {
         $stmt->execute([":name" => $name]);
         $results = $stmt->fetch(PDO::FETCH_ASSOC);
-        $product_id = $results["id"];
+        if ($results) {
+            $product_id = $results["id"];
+        } else {
+            flash("This is not a valid product", "warning");
+            redirect($BASE_PATH . "/home.php");
+        }
     } catch (PDOException $e) {
         flash("An unknown error occurred, please try again later", "warning");
         error_log(var_export($e->errorInfo, true));
@@ -55,19 +60,46 @@ else {
             error_log(var_export($e->errorInfo, true));
         }
     }
-    //gets ratings from database
-    $ratings = [];
-    $stmt4 = $db->prepare("SELECT rating, comment FROM Ratings WHERE product_id = :product_id LIMIT 10");
+    //rating pagination
+    $page = 1;
+    $per_page = 10;
+    $offset = 0;
+    if (isset($_GET["page"])) {
+        $page = $_GET["page"];
+        if ($page >= 1) {
+            $offset = ($page-1) * $per_page;
+        }
+    }
+    //gets all ratings and calculates average rating
+            //change this to fetch all ratings
+    $allRatings = [];
+    $stmt5 = $db ->prepare("SELECT rating FROM Ratings WHERE product_id = :product_id");
     try {
-        $stmt4->execute([":product_id"=>$product_id]);
-        $ratings = $stmt4->fetchAll(PDO::FETCH_ASSOC);
+        $stmt5->execute([":product_id"=>$product_id]);
+        $allRatings = $stmt5->fetchAll(PDO::FETCH_ASSOC);
         $rating_count = 0;
         $rating_total = 0;
-        foreach($ratings as $rating) {
+        foreach($allRatings as $rating) {
             $rating_count += 1;
             $rating_total += $rating["rating"];
         }
         $average_rating = round($rating_total/$rating_count, 1);
+        $rating_pages = ceil($rating_count/$per_page);
+    } catch(PDOException $e) {
+
+    }       
+    //gets ratings from database
+    $ratings = [];
+    $stmt4 = $db->prepare("SELECT rating, comment FROM Ratings WHERE product_id = :product_id ORDER BY modified DESC LIMIT :offset, :per_page");
+    $params = [":product_id"=>$product_id, ":offset"=>$offset, ":per_page"=>$per_page];
+    foreach ($params as $key => $value) {
+        $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+        $stmt4->bindValue($key, $value, $type);
+    }
+    $params = null;
+    try {
+        $stmt4->execute($params);
+        $ratings = $stmt4->fetchAll(PDO::FETCH_ASSOC);
     } catch(PDOException $e) {
         flash("Something went wrong trying to load this product's reviews", "warning");
         error_log(var_export($e->errorInfo, true));
@@ -145,6 +177,19 @@ else {
     </tbody>
 </table>
 </ul>
+=<nav aria-label="Review Page">
+    <ul class="pagination justify-content-center">
+        <li class="page-item <?php if ($page == 1): ?>disabled<?php endif; ?>">
+            <a class="page-link" href="?name=<?php se($name); ?>&page=<?php se($page - 1); ?>">Previous</a>
+        </li>
+        <?php for ($i = 0; $i < $rating_pages; $i++) : ?>
+            <li class="page-item <?php if($i == $page - 1): ?>active<?php endif; ?>"><a class="page-link" href="?name=<?php se($name); ?>&page=<?php se($i+1); ?>"><?php echo ($i + 1); ?></a></li>
+        <?php endfor; ?>
+        <li class="page-item <?php if($page == $rating_pages): ?>disabled<?php endif; ?>">
+            <a class="page-link" href="?name=<?php se($name); ?>&page=<?php echo (se($page, null, "", false) + 1) ?>">Next</a>
+        </li>
+    </ul>
+</nav>
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
 ?>
