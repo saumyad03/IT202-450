@@ -128,7 +128,7 @@ $username = get_username();
             <input class="form-control" type="password" name="confirmPassword" id="conp" />
         </div>
         <div class="mb-3">
-            <label class="form-label" for="public"></label>
+            <label class="form-label" for="public">Privacy</label>
             <select class="form-control" id="public" name="public">
                 <option <?php if (se($user, "public", "", false) == 1) : ?>selected<?php endif; ?>>Public</option>
                 <option <?php if (se($user, "public", "", false) == 0) : ?>selected<?php endif; ?>>Private</option>
