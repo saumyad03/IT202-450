@@ -74,19 +74,19 @@
     - [x] \(08/01/2022) Store Owner will be able to see all Purchase History
         -  Link to related .md file: [Milestone 3 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone3.md)
 - Milestone 4
-    - [x] \(mm/dd/yyyy of completion) User can set their profile to be public or private (will need another column in Users table)
+    - [x] \(08/07/2022) User can set their profile to be public or private (will need another column in Users table)
         -  Link to related .md file: [Name](Link) 
-    - [x] \(mm/dd/yyyy of completion) User will be able to rate a product they purchased
+    - [x] \(08/07/2022) User will be able to rate a product they purchased
         -  Link to related .md file: [Name](Link) 
-    - [x] \(mm/dd/yyyy of completion) User’s Purchase History Changes
+    - [x] \(08/08/2022) User’s Purchase History Changes
         -  Link to related .md file: [Name](Link) 
-    - [x] \(mm/dd/yyyy of completion) Store Owner Purchase History Changes
+    - [x] \(08/08/2022) Store Owner Purchase History Changes
         -  Link to related .md file: [Name](Link) 
-    - [x] \(mm/dd/yyyy of completion) Add pagination to Shop Page
+    - [x] \(08/08/2022) Add pagination to Shop Page
         -  Link to related .md file: [Name](Link) 
-    - [x] \(mm/dd/yyyy of completion) Store Owner will be able to see all products out of stock
+    - [x] \(08/08/2022) Store Owner will be able to see all products out of stock
         -  Link to related .md file: [Name](Link) 
-    - [x] \(mm/dd/yyyy of completion) User can sort products by average rating on the Shop Page
+    - [x] \(08/08/2022) User can sort products by average rating on the Shop Page
         -  Link to related .md file: [Name](Link) 
 ### Intructions
 #### Don't delete this
