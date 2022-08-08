@@ -23,6 +23,7 @@ $total_query = "SELECT COUNT(1) as total FROM Products name WHERE visibility=1 a
 $category = 'all';
 $search = '';
 $sort = 'none';
+$rating = "none";
 $results = [];
 $query = "SELECT name, unit_price FROM Products WHERE visibility=1 AND stock>0";
 $params = [];
@@ -52,6 +53,24 @@ if (isset($_GET["sort"])) {
             $query .= " ORDER BY unit_price ASC";
         } else {
             $query .= " ORDER BY unit_price DESC";
+        }
+    }
+}
+if (isset($_GET["rating"])) {
+    $rating = $_GET["rating"];
+    if ($rating != "none") {
+        if ($rating == "low-high") {
+            if (!strpos($query, "ORDER BY")) {
+                $query .= " ORDER BY average_rating ASC";
+            } else {
+                $query .= " , average_rating ASC";
+            }
+        } else {
+            if (!strpos($query, "ORDER BY")) {
+                $query .= " ORDER BY average_rating DESC";
+            } else {
+                $query .= " , average_rating ASC";
+            }
         }
     }
 }
@@ -113,6 +132,14 @@ try {
             <option value="none" <?php if (se($sort, null, "", false) == "none") : ?>selected<?php endif; ?>>None</option>
             <option value="low-high" <?php if (se($sort, null, "", false) == "low-high") : ?>selected<?php endif; ?>>Low-High</option>
             <option value="high-low" <?php if (se($sort, null, "", false) == "high-low") : ?>selected<?php endif; ?>>High-Low</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label" for="rating">Average Rating Sort</label>
+        <select class="form-select" aria-label="Rating Sort" name="rating" id="rating">
+            <option value="none" <?php if (se($rating, null, "", false) == "none") : ?>selected<?php endif; ?>>None</option>
+            <option value="low-high" <?php if (se($rating, null, "", false) == "low-high") : ?>selected<?php endif; ?>>Low-High</option>
+            <option value="high-low" <?php if (se($rating, null, "", false) == "high-low") : ?>selected<?php endif; ?>>High-Low</option>
         </select>
     </div>
     <div class="col-auto">
