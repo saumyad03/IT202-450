@@ -92,7 +92,8 @@ try {
     error_log(var_export($e->errorInfo, true));
 }
 ?>
-<form class="row offset-lg-2" method="GET" onsubmit="return validate(this)">
+<h1 class="left-padding">My Purchase History</h1>
+<form class="row offset-lg-2" method="GET">
     <div class="col-auto">
         <label class="form-label" for="date-range">Date Range</label>
         <select class="form-select" aria-label="Date Range" name="date-range" id="date-range">
@@ -130,7 +131,6 @@ try {
         <input class="form-control btn btn-primary" type="submit" value="Search">
     </div>
 </form>
-<h1 class="left-padding">My Purchase History</h1>
 <table class="table table-striped">
     <thead>
         <th>Order Name</th>
