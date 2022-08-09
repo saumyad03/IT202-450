@@ -1,9 +1,10 @@
 # Project Name: Simple Shop
 ## Project Summary: This project will create a simple e-commerce site for users. Administrators or store owners will be able to manage inventory and users will be able to manage their cart and place orders.
 ## Github Link: [https://github.com/saumyad03/IT202-450/tree/prod/public_html/Project](https://github.com/saumyad03/IT202-450/tree/prod/public_html/Project)
-## Project Board Link: 
+## Project Board Link: [https://github.com/saumyad03/IT202-450/projects/1](https://github.com/saumyad03/IT202-450/projects/1)
 ## Website Link: [http://sd96-prod.herokuapp.com/Project](http://sd96-prod.herokuapp.com/Project)
 ## Your Name: Saumya Dwivedi
+## Demo Video Link: [https://youtu.be/wapQ8kJaPto](https://youtu.be/wapQ8kJaPto)
 
 <!-- Line item / Feature template (use this for each bullet point) -- DO NOT DELETE THIS SECTION
 
