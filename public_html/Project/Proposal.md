@@ -75,19 +75,19 @@
         -  Link to related .md file: [Milestone 3 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone3.md)
 - Milestone 4
     - [x] \(08/07/2022) User can set their profile to be public or private (will need another column in Users table)
-        -  Link to related .md file: [Name](Link) 
+        -  Link to related .md file: [Milestone 4 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone4.md)
     - [x] \(08/07/2022) User will be able to rate a product they purchased
-        -  Link to related .md file: [Name](Link) 
+        -  Link to related .md file: [Milestone 4 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone4.md)
     - [x] \(08/08/2022) User’s Purchase History Changes
-        -  Link to related .md file: [Name](Link) 
+        -  Link to related .md file: [Milestone 4 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone4.md)
     - [x] \(08/08/2022) Store Owner Purchase History Changes
-        -  Link to related .md file: [Name](Link) 
+        -  Link to related .md file: [Milestone 4 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone4.md)
     - [x] \(08/08/2022) Add pagination to Shop Page
-        -  Link to related .md file: [Name](Link) 
+        -  Link to related .md file: [Milestone 4 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone4.md)
     - [x] \(08/08/2022) Store Owner will be able to see all products out of stock
-        -  Link to related .md file: [Name](Link) 
+        -  Link to related .md file: [Milestone 4 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone4.md)
     - [x] \(08/08/2022) User can sort products by average rating on the Shop Page
-        -  Link to related .md file: [Name](Link) 
+        -  Link to related .md file: [Milestone 4 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone4.md)
 ### Intructions
 #### Don't delete this
 1. Pick one project type
