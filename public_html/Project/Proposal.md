@@ -17,31 +17,77 @@
 ### Proposal Checklist and Evidence
 
 - Milestone 1
-    - [ ] \(mm/dd/yyyy of completion) User will be able to register a new account
-        -  Link to related .md file: [Link Name](link url)
-    - [ ] \(mm/dd/yyyy of completion) User will be able to login to their account (given they enter the correct credentials)
-        -  Link to related .md file: [Link Name](link url)
-    - [ ] \(mm/dd/yyyy of completion) User will be able to logout
-        -  Link to related .md file: [Link Name](link url)
-    - [ ] \(mm/dd/yyyy of completion) Basic security rules implemented
-        -  Link to related .md file: [Link Name](link url)
-    - [ ] \(mm/dd/yyyy of completion) Basic Roles implemented
-        -  Link to related .md file: [Link Name](link url)
-    - [ ] \(mm/dd/yyyy of completion) Site should have basic styles/theme applied; everything should be styled
-        -  Link to related .md file: [Link Name](link url)
-    - [ ] \(mm/dd/yyyy of completion) Any output messages/errors should be “user friendly”
-        -  Link to related .md file: [Link Name](link url)
-    - [ ] \(mm/dd/yyyy of completion) User will be able to see their profile
-        -  Link to related .md file: [Link Name](link url)
-    - [ ] \(mm/dd/yyyy of completion) User will be able to edit their profile
-        -  Link to related .md file: [Link Name](link url)
+    - [x] \(06/23/2022) User will be able to register a new account
+        -  Link to related .md file: [Milestone 1 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone1.md)
+    - [x] \(07/05/2022) User will be able to login to their account (given they enter the correct credentials)
+        -  Link to related .md file: [Milestone 1 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone1.md)
+    - [x] \(07/05/2022) User will be able to logout
+        -  Link to related .md file: [Milestone 1 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone1.md)
+    - [x] \(07/05/2022) Basic security rules implemented
+        -  Link to related .md file: [Milestone 1 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone1.md)
+    - [x] \(07/05/2022) Basic Roles implemented
+        -  Link to related .md file: [Milestone 1 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone1.md)
+    - [x] \(07/05/2022) Site should have basic styles/theme applied; everything should be styled
+        -  Link to related .md file: [Milestone 1 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone1.md)
+    - [x] \(07/05/2022) Any output messages/errors should be “user friendly”
+        -  Link to related .md file: [Milestone 1 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone1.md)
+    - [x] \(07/03/2022) User will be able to see their profile
+        -  Link to related .md file: [Milestone 1 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone1.md)
+    - [x] \(07/03/2022) User will be able to edit their profile
+        -  Link to related .md file: [Milestone 1 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone1.md)
 - Milestone 2
-  - (duplicate template here for Milestone 1 features)
+    - [x] \(07/15/2022) User with an admin role or shop owner role will be able to add products to inventory
+        -  Link to related .md file: [Milestone 2 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone2.md)
+    - [x] \(07/16/2022) Any user will be able to see products with visibility = true on the Shop page
+        -  Link to related .md file: [Milestone 2 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone2.md)
+    - [x] \(07/16/2022) Admin/Shop owner will be able to see products with any visibility
+        -  Link to related .md file: [Milestone 2 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone2.md)
+    - [x] \(07/16/2022) Admin/Shop owner will be able to edit any product
+        -  Link to related .md file: [Milestone 2 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone2.md)
+    - [x] \(07/16/2022) User will be able to click an item from a list and view a full page with more info about the item (Product Details Page)
+        -  Link to related .md file: [Milestone 2 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone2.md)
+    - [x] \(07/16/2022) User will be able to add items to Cart
+        -  Link to related .md file: [Milestone 2 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone2.md)
+    - [x] \(07/16/2022) User will be able to see their cart
+        -  Link to related .md file: [Milestone 2 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone2.md)
+    - [x] \(07/16/2022) User will be able to change quantity of items in their cart
+        -  Link to related .md file: [Milestone 2 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone2.md)
+    - [x] \(07/16/2022) User will be able to remove a single item from their cart via button click
+        -  Link to related .md file: [Milestone 2 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone2.md)
+    - [x] \(07/16/2022) User will be able to clear their entire cart via a button click
+        -  Link to related .md file: [Milestone 2 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone2.md)
+    - [x] \(07/16/2022) Show user-friendly error messages for applicable actions
+        -  Link to related .md file: [Milestone 2 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone2.md)
+    - [x] \(07/16/2022) Show user-friendly success message for applicable actions
+        -  Link to related .md file: [Milestone 2 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone2.md)
 - Milestone 3
-  - (duplicate template here for Milestone 1 features)
+    - [x] \(07/31/2022) Cart page will have a button(link) to place order
+        -  Link to related .md file: [Milestone 3 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone3.md)
+    - [x] \(07/31/2022) Orders will be able to be recorded
+        -  Link to related .md file: [Milestone 3 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone3.md)
+    - [x] \(08/01/2022) Checkout Page
+        -  Link to related .md file: [Milestone 3 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone3.md)
+    - [x] \(08/01/2022) Order Confirmation Page
+        -  Link to related .md file: [Milestone 3 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone3.md)
+    - [x] \(08/01/2022) User will be able to see their Purchase History
+        -  Link to related .md file: [Milestone 3 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone3.md)
+    - [x] \(08/01/2022) Store Owner will be able to see all Purchase History
+        -  Link to related .md file: [Milestone 3 Markdown File](https://github.com/saumyad03/IT202-450/blob/prod/public_html/Project/milestone3.md)
 - Milestone 4
-  - (duplicate template here for Milestone 1 features)
-  - 
+    - [x] \(08/07/2022) User can set their profile to be public or private (will need another column in Users table)
+        -  Link to related .md file: [Name](Link) 
+    - [x] \(08/07/2022) User will be able to rate a product they purchased
+        -  Link to related .md file: [Name](Link) 
+    - [x] \(08/08/2022) User’s Purchase History Changes
+        -  Link to related .md file: [Name](Link) 
+    - [x] \(08/08/2022) Store Owner Purchase History Changes
+        -  Link to related .md file: [Name](Link) 
+    - [x] \(08/08/2022) Add pagination to Shop Page
+        -  Link to related .md file: [Name](Link) 
+    - [x] \(08/08/2022) Store Owner will be able to see all products out of stock
+        -  Link to related .md file: [Name](Link) 
+    - [x] \(08/08/2022) User can sort products by average rating on the Shop Page
+        -  Link to related .md file: [Name](Link) 
 ### Intructions
 #### Don't delete this
 1. Pick one project type

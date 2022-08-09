@@ -6,10 +6,11 @@ is_logged_in(true);
 if (isset($_POST["save"])) {
     $email = se($_POST, "email", null, false);
     $username = se($_POST, "username", null, false);
+    $public = se($_POST, "public", "", false) == "Public" ? 1 : 0;
 
-    $params = [":email" => $email, ":username" => $username, ":id" => get_user_id()];
+    $params = [":email" => $email, ":username" => $username, ":id" => get_user_id(), ":public" => $public];
     $db = getDB();
-    $stmt = $db->prepare("UPDATE Users set email = :email, username = :username where id = :id");
+    $stmt = $db->prepare("UPDATE Users set email = :email, username = :username, public=:public where id = :id");
     try {
         $stmt->execute($params);
         flash("Profile saved", "success");
@@ -29,23 +30,6 @@ if (isset($_POST["save"])) {
             flash("An unknown error occurred", "danger");
             error_log(var_export($e->errorInfo, true));
         }
-    }
-    //select fresh data from table
-    $stmt = $db->prepare("SELECT id, email, username from Users where id = :id LIMIT 1");
-    try {
-        $stmt->execute([":id" => get_user_id()]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($user) {
-            //$_SESSION["user"] = $user;
-            $_SESSION["user"]["email"] = $user["email"];
-            $_SESSION["user"]["username"] = $user["username"];
-        } else {
-            flash("User doesn't exist", "danger");
-        }
-    } catch (Exception $e) {
-        flash("An unexpected error occurred, please try again", "danger");
-        error_log(var_export($e->errorInfo, true));
-        //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
     }
 
 
@@ -83,6 +67,35 @@ if (isset($_POST["save"])) {
         }
     }
 }
+//select fresh data from table
+$db = getDB();
+$stmt = $db->prepare("SELECT id, email, username, public from Users where id = :id LIMIT 1");
+try {
+    $stmt->execute([":id" => get_user_id()]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $privacy = $user["public"];
+    if ($user) {
+        //$_SESSION["user"] = $user;
+        $_SESSION["user"]["email"] = $user["email"];
+        $_SESSION["user"]["username"] = $user["username"];
+        $_SESSION["user"]["public"] = $user["public"];
+    } else {
+        flash("User doesn't exist", "danger");
+    }
+} catch (Exception $e) {
+    flash("An unexpected error occurred, please try again", "danger");
+    error_log(var_export($e->errorInfo, true));
+    //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+}
+//gets ratings
+$stmt2 = $db->prepare("SELECT Products.name, Ratings.rating, Ratings.comment FROM Products INNER JOIN Ratings ON Products.id = Ratings.product_id WHERE Ratings.user_id=:user_id");
+try {
+    $stmt2->execute([":user_id" => get_user_id()]);
+    $ratings = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    flash("Something went wrong trying to load this user's ratings", "warning");
+    error_log(var_export($e->errorInfo, true));
+}
 ?>
 
 <?php
@@ -113,6 +126,13 @@ $username = get_username();
         <div class="mb-3">
             <label class="form-label" for="conp">Confirm Password</label>
             <input class="form-control" type="password" name="confirmPassword" id="conp" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="public">Privacy</label>
+            <select class="form-control" id="public" name="public">
+                <option <?php if (se($user, "public", "", false) == 1) : ?>selected<?php endif; ?>>Public</option>
+                <option <?php if (se($user, "public", "", false) == 0) : ?>selected<?php endif; ?>>Private</option>
+            </select>
         </div>
         <input type="submit" class="mt-3 btn btn-primary" value="Update Profile" name="save" />
     </form>
@@ -153,7 +173,7 @@ $username = get_username();
             if (currpw.length < 8) {
                 flash("Current password must be at least 8 characters long", "warning");
                 isValid = false;
-            //If current password is valid, ensures new password follows password rules
+                //If current password is valid, ensures new password follows password rules
             } else {
                 if (pw.length < 8) {
                     flash("New password must be at least 8 characters long", "warning");
@@ -170,6 +190,28 @@ $username = get_username();
         return isValid;
     }
 </script>
+<table class="table table-striped">
+    <thead>
+        <th>Product</th>
+        <th>Rating</th>
+        <th>Comment</th>
+    </thead>
+    <tbody>
+        <?php if (empty($ratings)) : ?>
+            <tr>
+                <td colspan="100%">This user has no ratings</td>
+            </tr>
+        <?php else : ?>
+            <?php foreach ($ratings as $rating) : ?>
+                <tr>
+                    <td><a class="text-decoration-none text-dark" href="more_details.php?name=<?php se($rating, "name"); ?>"><?php se($rating, "name") ?></a></td>
+                    <td><?php se($rating, "rating") ?></td>
+                    <td><?php se($rating, "comment") ?></td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </tbody>
+</table>
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
 ?>
