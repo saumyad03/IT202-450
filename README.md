@@ -1,5 +1,7 @@
 # Web Application Demonstration / Explanation
 https://www.youtube.com/watch?v=wapQ8kJaPto&ab_channel=SaumyaDwivedi
+# Disclaimer
+- Website is no longer hosted on Heroku as free plan is no longer supported
 # Heroku Setup
 - 08/30/2021 removed .htaccess and updated Procfile to use public_html as docroot
 - Procfile tells Heroku how to deploy
