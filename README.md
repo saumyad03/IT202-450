@@ -1,12 +1,10 @@
-# Web Application Demonstration / Explanation
+# Demonstration / Explanation
 https://www.youtube.com/watch?v=wapQ8kJaPto&ab_channel=SaumyaDwivedi
-# Disclaimer
-- Website is no longer hosted on Heroku as free plan is no longer supported
-# Heroku Setup
-- 08/30/2021 removed .htaccess and updated Procfile to use public_html as docroot
-- Procfile tells Heroku how to deploy
-- Composer.json mentions what libraries will be used 
-- public_html contains all public facing content
-- partials contains  reusable templates/partial pages
-- lib contains custom functions/libraries/etc (reusable functionality)
-- All work is in subfolders inside public_html (for the most part)
+# Summary
+This was a e-commerce full stack web application I developed for my Internet Applications class at NJIT. A full explanation and demonstration of the features of the application can be seen in the video above. The following technologies were used:
+- PHP
+- JavaScript (including jQuery and AJAX)
+- HTML
+- CSS (Bootstrap)
+- SQL (MySQL)
+While this web application used to be deployed on Heroku, it isn't anymore as the free plan has been removed.
