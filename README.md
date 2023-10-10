@@ -7,4 +7,5 @@ This was a e-commerce full stack web application I developed for my Internet App
 - HTML
 - CSS (Bootstrap)
 - SQL (MySQL)
+
 While this web application used to be deployed on Heroku, it isn't anymore as the free plan has been removed.
