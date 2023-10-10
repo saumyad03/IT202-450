@@ -1,7 +1,7 @@
 # Demonstration / Explanation
 https://www.youtube.com/watch?v=wapQ8kJaPto&ab_channel=SaumyaDwivedi
 # Summary
-This was a e-commerce full stack web application I developed for my Internet Applications class at NJIT. A full explanation and demonstration of the features of the application can be seen in the video above. The following technologies were used:
+This was an e-commerce full stack web application I developed for my Internet Applications class at NJIT. A full explanation and demonstration of the features of the application can be seen in the video above. The following technologies were used:
 - PHP
 - JavaScript (including jQuery and AJAX)
 - HTML
